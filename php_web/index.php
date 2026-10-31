@@ -379,8 +379,6 @@ if (isset($_POST['submit'])) {
             <div class="form-footer">
                 <a href="register_customer.php">Đăng ký khách hàng</a>
                 <span style="color: #cbd5e1;">•</span>
-                <a href="register.php">Đăng ký nhân viên</a>
-                <span style="color: #cbd5e1;">•</span>
                 <a href="customer_portal.php">Cổng khách hàng</a>
             </div>
         </div>
