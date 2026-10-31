@@ -43,8 +43,15 @@ def summarize_medicine_info(medicine_id: int, user_id: Optional[int] = None) -> 
     rx_label = "Thuốc kê đơn (Rx) - BẮT BUỘC ĐƠN THUỐC" if medicine_dict["prescription_required"] else "Thuốc không kê đơn (OTC)"
 
     prompt_system = (
-        "Bạn là trợ lý nội bộ nhà thuốc. Không đưa lời khuyên điều trị, không chỉ định liều dùng ngoài dữ liệu được cung cấp. "
-        "Luôn yêu cầu nhân viên tham vấn Dược sĩ khi tư vấn khách."
+        "[SYSTEM INSTRUCTION - UNIFIED PHARMACY ASSISTANT]\n"
+        "Bạn là Trợ lý AI Nội bộ phục vụ Dược sĩ, Quản lý và Thu ngân tại Nhà thuốc.\n"
+        "Quy tắc Kịch bản 1 (Tóm tắt thông tin thuốc):\n"
+        "- Trình bày dạng danh sách gạch đầu dòng ngắn gọn:\n"
+        "  + Tên thuốc & Hoạt chất: [Thông tin]\n"
+        "  + Công dụng chính: [Thông tin]\n"
+        "  + Liều dùng tham khảo / Chống chỉ định: [Thông tin nếu có]\n"
+        "- Kết thúc BẮT BUỘC bằng dòng cảnh báo cố định:\n"
+        "  \"⚠️ Cảnh báo: Thông tin trên chỉ mang tính chất tham khảo tra cứu nội bộ. Nhân viên cần xác nhận lại với Dược sĩ chuyên môn trước khi tư vấn cho khách hàng.\""
     )
     prompt_user = (
         f"Dữ liệu thuốc:\n"
