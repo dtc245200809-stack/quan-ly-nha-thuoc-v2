@@ -1091,3 +1091,59 @@ body.sidebar-collapsed .ds-sidebar__icon {
     transition-duration: .001ms !important;
   }
 }
+
+/* ==========================================================
+   UI OVERRIDE: GIAO DIỆN CHUYÊN NGHIỆP THUẦN DƯỢC PHẨM
+   - Bo tròn sâu (pill shape / deep rounded)
+   - Tối giản, thanh lịch, bớt màu mè neon AI
+   ========================================================== */
+:root {
+  --radius-sm: 12px;
+  --radius-md: 16px;
+  --radius-lg: 24px;
+  --radius-pill: 9999px;
+}
+
+/* Nút bấm bo tròn sâu, phong cách y tế chuẩn mực */
+.btn, .btn-primary, .btn-secondary, .btn-success, .btn-danger, .btn-login,
+button, input[type="submit"], input[type="button"], .button,
+.ds-btn, .action-btn, .pill-btn, .mobile-menu-btn, .sb-toggle-btn {
+  border-radius: 9999px !important;
+  font-weight: 600 !important;
+  letter-spacing: 0.01em !important;
+  transition: all 0.2s cubic-bezier(0.4, 0, 0.2, 1) !important;
+}
+
+/* Form input, select, textarea bo tròn thanh lịch */
+input[type="text"], input[type="password"], input[type="email"], 
+input[type="number"], input[type="search"], select, .form-control {
+  border-radius: 16px !important;
+  border: 1px solid #cbd5e1 !important;
+  transition: all 0.2s ease !important;
+}
+
+input[type="text"]:focus, input[type="password"]:focus, 
+input[type="email"]:focus, input[type="number"]:focus, select:focus {
+  border-color: #0284c7 !important;
+  box-shadow: 0 0 0 3px rgba(2, 132, 199, 0.15) !important;
+}
+
+/* Card, Panel, Modal bo tròn mềm mại chuẩn Y tế GPP */
+.ds-card, .panel, .login-card, .modal-content, .card,
+.stat-card, .table-card, .ds-sidebar, .kh-top-grid > div {
+  border-radius: 20px !important;
+  box-shadow: 0 4px 20px -2px rgba(15, 23, 42, 0.05) !important;
+}
+
+/* Badge, Tag, Chip bo viên thuốc tròn trịa */
+.badge, .tag, .status-pill, .chip, .alert-pill, .role-badge {
+  border-radius: 9999px !important;
+  padding: 4px 12px !important;
+}
+
+/* Khử các hiệu ứng viền phát sáng gradient/neon AI rực rỡ, đưa về màu xanh Y tế (Medical Slate/Teal/Blue) */
+.ai-glow, [class*="gradient-ai"], [class*="ai-neon"] {
+  background: #f8fafc !important;
+  border-color: #e2e8f0 !important;
+  box-shadow: none !important;
+}

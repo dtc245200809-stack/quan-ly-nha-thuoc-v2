@@ -103,9 +103,9 @@ function pms_nav_for(string $role): array {
             ['href' => 'bao_cao.php', 'label' => 'Doanh thu', 'icon' => '📊'],
             ['href' => 'xnt.php', 'label' => 'Xuất - nhập - tồn', 'icon' => '📈'],
         ]],
-                ['group' => 'Trợ lý AI', 'items' => [
-            ['href' => 'ai_assistant.php', 'label' => 'AI Copilot Dược', 'icon' => '🤖'],
-            ['href' => 'ai_config.php', 'label' => 'Cấu hình Đa Key AI', 'icon' => '🔑'],
+                ['group' => 'Trợ lý nghiệp vụ', 'items' => [
+            ['href' => 'ai_assistant.php', 'label' => 'Tra cứu & Hỗ trợ nghiệp vụ', 'icon' => '📚'],
+            ['href' => 'ai_config.php', 'label' => 'Cấu hình API Engine', 'icon' => '⚙️'],
         ]],
         ['group' => 'Hệ thống', 'items' => [
             ['href' => 'accounts.php', 'label' => 'Tài khoản & phân quyền', 'icon' => '🛡️'],
