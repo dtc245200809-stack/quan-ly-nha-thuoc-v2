@@ -11,7 +11,7 @@ function pms_get_ai_config(): array {
         'api_key' => '',
         'api_keys' => [],
         'current_key_index' => 0,
-        'model' => 'gemini-1.5-flash',
+        'model' => 'gemini-2.5-flash',
         'custom_prompt' => ''
     ];
     if (file_exists($configFile)) {
@@ -40,7 +40,7 @@ function pms_save_ai_config(array $config): bool {
 function pms_call_ai(string $prompt, string $systemPrompt = ''): array {
     $config = pms_get_ai_config();
     $provider = $config['provider'] ?? 'gemini';
-    $model = $config['model'] ?? 'gemini-1.5-flash';
+    $model = $config['model'] ?? 'gemini-2.5-flash';
     $keys = $config['api_keys'] ?? [];
     if (empty($keys) && !empty($config['api_key'])) {
         $keys = [$config['api_key']];

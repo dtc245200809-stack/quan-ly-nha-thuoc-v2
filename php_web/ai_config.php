@@ -83,10 +83,14 @@ pms_render_header($page_title, pms_current_role(), "ai_config.php");
             <div>
                 <label style="display:block;font-size:13px;font-weight:600;color:var(--ds-text);margin-bottom:6px;">Mô hình AI (Model):</label>
                 <select name="model" class="form-control" style="width:100%;padding:10px;border:1px solid #d1d5db;border-radius:8px;font-size:13px;">
-                    <option value="gemini-1.5-flash" <?= ($cfg['model'] ?? '') === 'gemini-1.5-flash' ? 'selected' : '' ?>>Gemini 1.5 Flash (Tốc độ cao, tối ưu quota)</option>
-                    <option value="gemini-2.0-flash" <?= ($cfg['model'] ?? '') === 'gemini-2.0-flash' ? 'selected' : '' ?>>Gemini 2.0 Flash (Thế hệ mới nhất)</option>
-                    <option value="gemini-1.5-pro" <?= ($cfg['model'] ?? '') === 'gemini-1.5-pro' ? 'selected' : '' ?>>Gemini 1.5 Pro (Suy luận sâu)</option>
-                    <option value="gpt-4o-mini" <?= ($cfg['model'] ?? '') === 'gpt-4o-mini' ? 'selected' : '' ?>>OpenAI gpt-4o-mini</option>
+                    <option value="gemini-2.5-flash" <?= ($cfg['model'] ?? '') === 'gemini-2.5-flash' ? 'selected' : '' ?>>Gemini 2.5 Flash (Thế hệ mới tối ưu tốc độ & quota)</option>
+                    <option value="gemini-2.5-pro" <?= ($cfg['model'] ?? '') === 'gemini-2.5-pro' ? 'selected' : '' ?>>Gemini 2.5 Pro (Suy luận sâu chuyên sâu y khoa)</option>
+                    <option value="gemini-2.0-flash" <?= ($cfg['model'] ?? '') === 'gemini-2.0-flash' ? 'selected' : '' ?>>Gemini 2.0 Flash (Tốc độ phản hồi cực nhanh)</option>
+                    <option value="gemini-2.0-flash-lite" <?= ($cfg['model'] ?? '') === 'gemini-2.0-flash-lite' ? 'selected' : '' ?>>Gemini 2.0 Flash-Lite (Tiết kiệm token tối đa)</option>
+                    <option value="gemini-1.5-flash" <?= ($cfg['model'] ?? '') === 'gemini-1.5-flash' ? 'selected' : '' ?>>Gemini 1.5 Flash (Cực kỳ ổn định)</option>
+                    <option value="gemini-1.5-pro" <?= ($cfg['model'] ?? '') === 'gemini-1.5-pro' ? 'selected' : '' ?>>Gemini 1.5 Pro (Dữ liệu lớn, ngữ cảnh dài)</option>
+                    <option value="gpt-4o-mini" <?= ($cfg['model'] ?? '') === 'gpt-4o-mini' ? 'selected' : '' ?>>OpenAI GPT-4o Mini</option>
+                    <option value="gpt-4o" <?= ($cfg['model'] ?? '') === 'gpt-4o' ? 'selected' : '' ?>>OpenAI GPT-4o (Đa phương thức)</option>
                 </select>
             </div>
         </div>

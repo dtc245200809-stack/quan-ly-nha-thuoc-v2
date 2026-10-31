@@ -9,7 +9,7 @@ CONFIG_PATH = os.path.join(os.path.dirname(os.path.dirname(os.path.abspath(__fil
 DEFAULT_CONFIG = {
     "provider": "gemini", # "gemini", "local", "openai"
     "gemini_keys": [],
-    "model_name": "gemini-1.5-flash",
+    "model_name": "gemini-2.5-flash",
     "current_key_index": 0,
     "auto_rotate": True,
     "temperature": 0.3,
