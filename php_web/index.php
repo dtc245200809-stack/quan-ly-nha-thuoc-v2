@@ -857,9 +857,10 @@ if (isset($_POST['submit'])) {
                 </div>
             </div>
 
-            <div class="card-footer">
+            <div class="card-footer" style="display:flex;justify-content:center;gap:18px;align-items:center;">
+                <a href="register.php" style="font-weight:600;color:#0284c7;">Đăng ký tài khoản nhân viên</a>
+                <span style="color:#cbd5e1;">•</span>
                 <a href="about/about.html">Giới thiệu</a>
-
             </div>
         </div>
     </div>
