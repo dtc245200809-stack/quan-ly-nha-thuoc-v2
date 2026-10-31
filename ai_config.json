@@ -1,0 +1,27 @@
+{
+  "provider": "gemini",
+  "gemini_keys": [
+    "AIzaSyKeyA111111111111111111111",
+    "AIzaSyKeyB222222222222222222222"
+  ],
+  "model_name": "gemini-1.5-flash",
+  "current_key_index": 1,
+  "auto_rotate": true,
+  "temperature": 0.3,
+  "key_stats": {
+    "...111111": {
+      "status": "quota_exhausted",
+      "uses": 0,
+      "errors": 1,
+      "last_used": "2026-11-01T02:37:45.315107",
+      "last_error": "Hết Token / Quota Limit (HTTP 429)"
+    },
+    "...222222": {
+      "status": "quota_exhausted",
+      "uses": 0,
+      "errors": 1,
+      "last_used": "2026-11-01T02:37:45.315173",
+      "last_error": "Hết Token / Quota Limit (HTTP 429)"
+    }
+  }
+}
