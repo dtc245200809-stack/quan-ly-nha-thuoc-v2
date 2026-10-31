@@ -1,0 +1,118 @@
+{% extends "layout.html" %}
+
+{% block title %}Nhóm Phát Triển Đề Tài - PharmaAI{% endblock %}
+{% block header_title %}Giới Thiệu Đề Tài & Nhóm Thực Hiện{% endblock %}
+
+{% block content %}
+<div class="space-y-8 max-w-5xl mx-auto">
+    <!-- Project Banner -->
+    <div class="bg-gradient-to-r from-teal-800 via-teal-900 to-slate-900 text-white p-8 rounded-2xl shadow-xl border border-teal-700/50">
+        <div class="flex items-center gap-3 mb-2">
+            <span class="px-3 py-1 rounded-full text-xs font-bold bg-teal-500 text-white uppercase tracking-wider">Đồ Án Môn Học / Đề Tài AI</span>
+            <span class="text-xs text-teal-300">Phiên bản 2.0 (FastAPI + GPP AI Guardrails)</span>
+        </div>
+        <h2 class="text-2xl font-black text-white tracking-tight">HỆ THỐNG QUẢN LÝ NHÀ THUỐC TÍCH HỢP TRÍ TUỆ NHÂN TẠO (AI)</h2>
+        <p class="text-sm text-teal-100 mt-2 leading-relaxed">
+            Giải pháp số hóa toàn diện quản lý danh mục thuốc, quản trị lô hạn FEFO (First Expired, First Out), bán hàng quầy POS, cảnh báo tự động tồn kho và Trợ lý AI y tế hỗ trợ tra cứu nội bộ tuân thủ nghiêm ngặt chuẩn đạo đức và an toàn GPP.
+        </p>
+    </div>
+
+    <!-- Team Members Cards -->
+    <div>
+        <h3 class="text-base font-bold text-slate-800 mb-4 flex items-center gap-2">
+            <i class="fa-solid fa-users text-teal-600"></i> Thành Viên Nhóm Thực Hiện
+        </h3>
+        <div class="grid grid-cols-1 md:grid-cols-3 gap-5">
+            <!-- Member 1 -->
+            <div class="bg-white p-6 rounded-2xl border border-slate-200 shadow-sm flex flex-col items-center text-center hover:border-teal-400 transition">
+                <div class="w-20 h-20 rounded-full bg-gradient-to-tr from-teal-500 to-emerald-400 text-white flex items-center justify-center text-3xl font-bold shadow-lg mb-4">
+                    TMQ
+                </div>
+                <h4 class="font-bold text-base text-slate-900">Thạch Minh Quân</h4>
+                <p class="text-xs text-teal-600 font-semibold mt-1">Trưởng Nhóm / Kiến Trúc Hệ Thống</p>
+                <div class="mt-4 pt-4 border-t border-slate-100 w-full text-left text-xs text-slate-600 space-y-1.5">
+                    <p>🔹 Thiết kế CSDL & Backend API</p>
+                    <p>🔹 Xây dựng AI Guardrails & Prompt System</p>
+                    <p>🔹 Tích hợp cơ chế xuất kho FEFO</p>
+                </div>
+            </div>
+
+            <!-- Member 2 -->
+            <div class="bg-white p-6 rounded-2xl border border-slate-200 shadow-sm flex flex-col items-center text-center hover:border-teal-400 transition">
+                <div class="w-20 h-20 rounded-full bg-gradient-to-tr from-blue-500 to-cyan-400 text-white flex items-center justify-center text-3xl font-bold shadow-lg mb-4">
+                    NTK
+                </div>
+                <h4 class="font-bold text-base text-slate-900">Nguyễn Trung Kiên</h4>
+                <p class="text-xs text-blue-600 font-semibold mt-1">Phát Triển Nghiệp Vụ & AI Chatbot</p>
+                <div class="mt-4 pt-4 border-t border-slate-100 w-full text-left text-xs text-slate-600 space-y-1.5">
+                    <p>🔹 Xây dựng Chatbot SOP nội bộ</p>
+                    <p>🔹 Thu thập dữ liệu Dược phẩm & Quy trình GPP</p>
+                    <p>🔹 Báo cáo phân tích rủi ro cận hạn AI</p>
+                </div>
+            </div>
+
+            <!-- Member 3 -->
+            <div class="bg-white p-6 rounded-2xl border border-slate-200 shadow-sm flex flex-col items-center text-center hover:border-teal-400 transition">
+                <div class="w-20 h-20 rounded-full bg-gradient-to-tr from-amber-500 to-orange-400 text-white flex items-center justify-center text-3xl font-bold shadow-lg mb-4">
+                    LHH
+                </div>
+                <h4 class="font-bold text-base text-slate-900">Lê Huy Hoàng</h4>
+                <p class="text-xs text-amber-600 font-semibold mt-1">Giao Diện Web & Kiểm Thử Hệ Thống</p>
+                <div class="mt-4 pt-4 border-t border-slate-100 w-full text-left text-xs text-slate-600 space-y-1.5">
+                    <p>🔹 Thiết kế UI/UX Quầy POS & Dashboard</p>
+                    <p>🔹 Viết kịch bản kiểm thử an toàn AI (KT3)</p>
+                    <p>🔹 Soạn thảo tài liệu SDLC & Báo cáo bảo mật</p>
+                </div>
+            </div>
+        </div>
+    </div>
+
+    <!-- SDLC Milestones Evidence -->
+    <div class="bg-white p-6 rounded-2xl border border-slate-200 shadow-sm space-y-4">
+        <h3 class="text-base font-bold text-slate-800 flex items-center gap-2">
+            <i class="fa-solid fa-list-check text-teal-600"></i> Minh Chứng Các Giai Đoạn Vòng Đời Phần Mềm (SDLC)
+        </h3>
+        <div class="grid grid-cols-1 md:grid-cols-2 gap-4 text-xs">
+            <div class="p-4 rounded-xl bg-slate-50 border border-slate-200 space-y-2">
+                <div class="flex items-center justify-between">
+                    <span class="font-bold text-teal-800 text-sm">Giai Đoạn KT1: Nghiệp Vụ & Giới Hạn AI</span>
+                    <span class="px-2 py-0.5 rounded text-[10px] font-bold bg-teal-100 text-teal-800">Hoàn thành</span>
+                </div>
+                <p class="text-slate-600 leading-relaxed">
+                    Khảo sát luồng xuất nhập kho GSP/GPP, quản lý biệt dược, thiết kế ERD 10 bảng quan hệ, xác định ranh giới đạo đức: AI không chẩn đoán hay kê đơn thuốc.
+                </p>
+            </div>
+
+            <div class="p-4 rounded-xl bg-slate-50 border border-slate-200 space-y-2">
+                <div class="flex items-center justify-between">
+                    <span class="font-bold text-teal-800 text-sm">Giai Đoạn KT2: API & Logic Tồn Kho FEFO</span>
+                    <span class="px-2 py-0.5 rounded text-[10px] font-bold bg-teal-100 text-teal-800">Hoàn thành</span>
+                </div>
+                <p class="text-slate-600 leading-relaxed">
+                    Xây dựng hệ thống RESTful API chuẩn OpenAPI, giải thuật tự động trừ tồn kho theo lô có hạn sử dụng gần nhất, khóa tự động các lô hết hạn.
+                </p>
+            </div>
+
+            <div class="p-4 rounded-xl bg-slate-50 border border-slate-200 space-y-2">
+                <div class="flex items-center justify-between">
+                    <span class="font-bold text-teal-800 text-sm">Giai Đoạn KT3: Prompt An Toàn & Test Suite</span>
+                    <span class="px-2 py-0.5 rounded text-[10px] font-bold bg-teal-100 text-teal-800">Hoàn thành</span>
+                </div>
+                <p class="text-slate-600 leading-relaxed">
+                    Thiết kế Prompt An toàn, hệ thống Guardrails bằng Regex & Semantic Filter, viết bộ test tự động PyTest kiểm thử 100% các câu hỏi vượt quyền.
+                </p>
+            </div>
+
+            <div class="p-4 rounded-xl bg-slate-50 border border-slate-200 space-y-2">
+                <div class="flex items-center justify-between">
+                    <span class="font-bold text-teal-800 text-sm">Giai Đoạn Cuối Kỳ: Báo Cáo Đạo Đức & Slide</span>
+                    <span class="px-2 py-0.5 rounded text-[10px] font-bold bg-teal-100 text-teal-800">Hoàn thành</span>
+                </div>
+                <p class="text-slate-600 leading-relaxed">
+                    Hoàn thiện báo cáo Đạo đức Trí tuệ Nhân tạo y tế, kiểm tra an toàn thông tin (Security Review), tài liệu README hướng dẫn triển khai.
+                </p>
+            </div>
+        </div>
+    </div>
+</div>
+{% endblock %}

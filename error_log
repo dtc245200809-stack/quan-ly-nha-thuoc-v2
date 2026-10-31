@@ -1,0 +1,25 @@
+[31-Oct-2026 18:23:55 UTC] PHP Fatal error:  Uncaught mysqli_sql_exception: Access denied for user 'gkxmmtkm_thachminhquan'@'localhost' (using password: NO) in /tmp/test_mysql.php:4
+Stack trace:
+#0 /tmp/test_mysql.php(4): mysqli_connect('localhost', 'gkxmmtkm_thachm...', Object(SensitiveParameterValue), 'gkxmmtkm_thachm...')
+#1 {main}
+  thrown in /tmp/test_mysql.php on line 4
+[31-Oct-2026 18:23:59 UTC] PHP Fatal error:  Uncaught mysqli_sql_exception: Access denied for user 'gkxmmtkm_thachminhquan'@'localhost' (using password: NO) in Command line code:4
+Stack trace:
+#0 Command line code(4): mysqli_connect('localhost', 'gkxmmtkm_thachm...', Object(SensitiveParameterValue), 'gkxmmtkm_thachm...')
+#1 {main}
+  thrown in Command line code on line 4
+[31-Oct-2026 18:24:02 UTC] PHP Fatal error:  Uncaught Error: Call to undefined function mysqli_connect() in Command line code:1
+Stack trace:
+#0 {main}
+  thrown in Command line code on line 1
+[31-Oct-2026 18:25:02 UTC] PHP Fatal error:  Uncaught mysqli_sql_exception: Table 'gkxmmtkm_thachminhquan.stock' doesn't exist in /home/gkxmmtkm/public_html/connect_db.php:129
+Stack trace:
+#0 /home/gkxmmtkm/public_html/connect_db.php(129): mysqli_query(Object(mysqli), 'INSERT IGNORE I...')
+#1 Command line code(1): require('/home/gkxmmtkm/...')
+#2 {main}
+  thrown in /home/gkxmmtkm/public_html/connect_db.php on line 129
+[31-Oct-2026 18:25:08 UTC] PHP Fatal error:  Uncaught mysqli_sql_exception: Table 'gkxmmtkm_thachminhquan.stock' doesn't exist in /home/gkxmmtkm/public_html/connect_db.php:129
+Stack trace:
+#0 /home/gkxmmtkm/public_html/connect_db.php(129): mysqli_query(Object(mysqli), 'INSERT IGNORE I...')
+#1 {main}
+  thrown in /home/gkxmmtkm/public_html/connect_db.php on line 129

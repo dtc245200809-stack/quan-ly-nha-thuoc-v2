@@ -1,0 +1,101 @@
+{% extends "layout.html" %}
+
+{% block title %}Đăng Nhập Hệ Thống - PharmaAI{% endblock %}
+{% block header_title %}Đăng Nhập & Phân Quyền Nhân Sự{% endblock %}
+
+{% block content %}
+<div class="max-w-md mx-auto mt-8 bg-white p-6 rounded-2xl border border-slate-200 shadow-sm space-y-5">
+    <div class="text-center space-y-1">
+        <div class="w-12 h-12 rounded-xl bg-teal-500 text-white flex items-center justify-center font-bold text-2xl mx-auto shadow">
+            <i class="fa-solid fa-notes-medical"></i>
+        </div>
+        <h3 class="font-bold text-lg text-slate-800">Đăng Nhập PharmaAI</h3>
+        <p class="text-xs text-slate-500">Chọn tài khoản theo phân quyền nhân sự nhà thuốc</p>
+    </div>
+
+    <!-- Quick role selection -->
+    <div class="space-y-2">
+        <button onclick="quickLogin('admin', 'admin123')" class="w-full p-3 rounded-xl border border-slate-200 hover:border-teal-500 hover:bg-teal-50/50 flex items-center justify-between transition text-left">
+            <div class="flex items-center gap-3">
+                <div class="w-8 h-8 rounded-lg bg-teal-100 text-teal-700 flex items-center justify-center font-bold text-xs">QL</div>
+                <div>
+                    <h5 class="font-bold text-xs text-slate-800">Thạch Minh Quân</h5>
+                    <p class="text-[11px] text-teal-600 font-medium">Quản lý toàn quyền (Admin)</p>
+                </div>
+            </div>
+            <i class="fa-solid fa-arrow-right text-slate-400 text-xs"></i>
+        </button>
+
+        <button onclick="quickLogin('pharmacist', 'duocsi123')" class="w-full p-3 rounded-xl border border-slate-200 hover:border-teal-500 hover:bg-teal-50/50 flex items-center justify-between transition text-left">
+            <div class="flex items-center gap-3">
+                <div class="w-8 h-8 rounded-lg bg-blue-100 text-blue-700 flex items-center justify-center font-bold text-xs">DS</div>
+                <div>
+                    <h5 class="font-bold text-xs text-slate-800">Nguyễn Trung Kiên</h5>
+                    <p class="text-[11px] text-blue-600 font-medium">Dược sĩ phụ trách chuyên môn (GPP)</p>
+                </div>
+            </div>
+            <i class="fa-solid fa-arrow-right text-slate-400 text-xs"></i>
+        </button>
+
+        <button onclick="quickLogin('cashier', 'thungan123')" class="w-full p-3 rounded-xl border border-slate-200 hover:border-teal-500 hover:bg-teal-50/50 flex items-center justify-between transition text-left">
+            <div class="flex items-center gap-3">
+                <div class="w-8 h-8 rounded-lg bg-amber-100 text-amber-700 flex items-center justify-center font-bold text-xs">TN</div>
+                <div>
+                    <h5 class="font-bold text-xs text-slate-800">Lê Huy Hoàng</h5>
+                    <p class="text-[11px] text-amber-600 font-medium">Nhân viên Bán hàng & Thu ngân</p>
+                </div>
+            </div>
+            <i class="fa-solid fa-arrow-right text-slate-400 text-xs"></i>
+        </button>
+    </div>
+
+    <div class="relative flex py-2 items-center">
+        <div class="flex-grow border-t border-slate-200"></div>
+        <span class="flex-shrink mx-2 text-[10px] text-slate-400 uppercase">Hoặc đăng nhập thủ công</span>
+        <div class="flex-grow border-t border-slate-200"></div>
+    </div>
+
+    <form onsubmit="handleCustomLogin(event)" class="space-y-3 text-xs">
+        <div>
+            <label class="block font-medium text-slate-700 mb-1">Tên đăng nhập</label>
+            <input type="text" id="loginUser" required class="w-full px-3 py-2 border rounded-lg focus:ring-1 focus:ring-teal-500">
+        </div>
+        <div>
+            <label class="block font-medium text-slate-700 mb-1">Mật khẩu</label>
+            <input type="password" id="loginPass" required class="w-full px-3 py-2 border rounded-lg focus:ring-1 focus:ring-teal-500">
+        </div>
+        <button type="submit" class="w-full py-2.5 bg-teal-600 hover:bg-teal-700 text-white font-bold rounded-lg shadow transition">
+            Đăng Nhập
+        </button>
+    </form>
+</div>
+{% endblock %}
+
+{% block scripts %}
+<script>
+    async function quickLogin(u, p) {
+        try {
+            const res = await fetch('/api/auth/login', {
+                method: 'POST',
+                headers: {'Content-Type': 'application/json'},
+                body: JSON.stringify({ username: u, password: p })
+            });
+            const data = await res.json();
+            if (!res.ok) throw new Error(data.detail || 'Lỗi đăng nhập');
+            localStorage.setItem('pharma_token', data.access_token);
+            localStorage.setItem('pharma_role', data.user.role);
+            alert(`Đăng nhập thành công với vai trò: ${data.user.full_name} (${data.user.role})`);
+            window.location.href = '/';
+        } catch (err) {
+            alert(err.message);
+        }
+    }
+
+    async function handleCustomLogin(e) {
+        e.preventDefault();
+        const u = document.getElementById('loginUser').value;
+        const p = document.getElementById('loginPass').value;
+        await quickLogin(u, p);
+    }
+</script>
+{% endblock %}

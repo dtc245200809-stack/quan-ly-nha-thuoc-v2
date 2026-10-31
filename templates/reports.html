@@ -1,0 +1,154 @@
+{% extends "layout.html" %}
+
+{% block title %}Báo Cáo Thống Kê & Doanh Thu - PharmaAI{% endblock %}
+{% block header_title %}Báo Cáo Doanh Thu & Kho Vận{% endblock %}
+
+{% block content %}
+<div class="space-y-6">
+    <!-- Summary Header Cards -->
+    <div class="grid grid-cols-1 md:grid-cols-3 gap-5">
+        <div class="bg-white p-5 rounded-xl border border-slate-200 shadow-sm flex items-center justify-between">
+            <div>
+                <p class="text-xs font-medium text-slate-500 uppercase tracking-wider">Tổng Doanh Thu Hệ Thống</p>
+                <h4 id="repTotalRev" class="text-2xl font-black text-teal-700 mt-1">Đang tải...</h4>
+                <p class="text-[11px] text-slate-500 mt-1">Từ tất cả các hóa đơn bán quầy</p>
+            </div>
+            <div class="w-12 h-12 rounded-xl bg-teal-50 text-teal-600 flex items-center justify-center text-xl">
+                <i class="fa-solid fa-chart-simple"></i>
+            </div>
+        </div>
+
+        <div class="bg-white p-5 rounded-xl border border-slate-200 shadow-sm flex items-center justify-between">
+            <div>
+                <p class="text-xs font-medium text-slate-500 uppercase tracking-wider">Tổng Giá Trị Kho Thuốc</p>
+                <h4 id="repInvVal" class="text-2xl font-black text-blue-700 mt-1">Đang tải...</h4>
+                <p class="text-[11px] text-slate-500 mt-1">Tính theo giá vốn nhập kho các lô active</p>
+            </div>
+            <div class="w-12 h-12 rounded-xl bg-blue-50 text-blue-600 flex items-center justify-center text-xl">
+                <i class="fa-solid fa-warehouse"></i>
+            </div>
+        </div>
+
+        <div class="bg-white p-5 rounded-xl border border-slate-200 shadow-sm flex items-center justify-between">
+            <div>
+                <p class="text-xs font-medium text-slate-500 uppercase tracking-wider">Tổng Hóa Đơn Xuất Bán</p>
+                <h4 id="repInvCount" class="text-2xl font-black text-slate-800 mt-1">Đang tải...</h4>
+                <p class="text-[11px] text-slate-500 mt-1">Số giao dịch thanh toán thành công</p>
+            </div>
+            <div class="w-12 h-12 rounded-xl bg-slate-100 text-slate-700 flex items-center justify-center text-xl">
+                <i class="fa-solid fa-receipt"></i>
+            </div>
+        </div>
+    </div>
+
+    <!-- 2 Column Charts & Top Sellers -->
+    <div class="grid grid-cols-1 lg:grid-cols-12 gap-6">
+        <!-- Daily Revenue Table (7 Cols) -->
+        <div class="lg:col-span-7 bg-white rounded-xl border border-slate-200 shadow-sm overflow-hidden flex flex-col">
+            <div class="px-5 py-4 border-b border-slate-100 bg-slate-50 flex items-center justify-between">
+                <div class="flex items-center gap-2">
+                    <i class="fa-solid fa-calendar-days text-teal-600"></i>
+                    <h4 class="font-bold text-xs text-slate-800">Doanh Thu Theo Ngày (14 Ngày Gần Nhất)</h4>
+                </div>
+            </div>
+            <div class="p-0 overflow-x-auto flex-1">
+                <table class="w-full text-left text-xs text-slate-600">
+                    <thead class="bg-slate-50 text-slate-500 border-b border-slate-200 font-medium">
+                        <tr>
+                            <th class="px-4 py-3">Ngày Giao Dịch</th>
+                            <th class="px-3 py-3 text-right">Số Đơn Hàng</th>
+                            <th class="px-4 py-3 text-right">Tổng Doanh Thu</th>
+                        </tr>
+                    </thead>
+                    <tbody id="dailyRevTbody" class="divide-y divide-slate-100">
+                        <tr><td colspan="3" class="px-4 py-6 text-center text-slate-400">Đang nạp báo cáo...</td></tr>
+                    </tbody>
+                </table>
+            </div>
+        </div>
+
+        <!-- Top Selling Drugs (5 Cols) -->
+        <div class="lg:col-span-5 bg-white rounded-xl border border-slate-200 shadow-sm overflow-hidden flex flex-col">
+            <div class="px-5 py-4 border-b border-slate-100 bg-slate-50 flex items-center justify-between">
+                <div class="flex items-center gap-2">
+                    <i class="fa-solid fa-fire text-amber-500"></i>
+                    <h4 class="font-bold text-xs text-slate-800">Top Dược Phẩm Bán Chạy Nhất</h4>
+                </div>
+            </div>
+            <div class="p-0 overflow-x-auto flex-1">
+                <table class="w-full text-left text-xs text-slate-600">
+                    <thead class="bg-slate-50 text-slate-500 border-b border-slate-200 font-medium">
+                        <tr>
+                            <th class="px-4 py-3">Tên Thuốc</th>
+                            <th class="px-3 py-3 text-right">Số Lượng Đã Bán</th>
+                            <th class="px-4 py-3 text-right">Doanh Thu</th>
+                        </tr>
+                    </thead>
+                    <tbody id="topSellingTbody" class="divide-y divide-slate-100">
+                        <tr><td colspan="3" class="px-4 py-6 text-center text-slate-400">Đang nạp dữ liệu...</td></tr>
+                    </tbody>
+                </table>
+            </div>
+        </div>
+    </div>
+</div>
+{% endblock %}
+
+{% block scripts %}
+<script>
+    document.addEventListener('DOMContentLoaded', () => {
+        loadReports();
+    });
+
+    async function loadReports() {
+        try {
+            const [sumRes, dailyRes, topRes] = await Promise.all([
+                fetch('/api/reports/summary'),
+                fetch('/api/reports/revenue-by-day'),
+                fetch('/api/reports/top-selling?limit=10')
+            ]);
+
+            const summary = await sumRes.json();
+            const daily = await dailyRes.json();
+            const top = await topRes.json();
+
+            document.getElementById('repTotalRev').textContent = formatCurrency(summary.total_revenue || 0);
+            document.getElementById('repInvVal').textContent = formatCurrency(summary.inventory_value || 0);
+            document.getElementById('repInvCount').textContent = (summary.total_invoices || 0) + ' HĐ';
+
+            // Daily table
+            const dailyTbody = document.getElementById('dailyRevTbody');
+            if (!daily.length) {
+                dailyTbody.innerHTML = '<tr><td colspan="3" class="px-4 py-6 text-center text-slate-400">Chưa có dữ liệu</td></tr>';
+            } else {
+                dailyTbody.innerHTML = daily.map(d => `
+                    <tr class="hover:bg-slate-50">
+                        <td class="px-4 py-3 font-semibold text-slate-800">${d.sale_date}</td>
+                        <td class="px-3 py-3 text-right font-mono font-medium">${d.invoice_count} đơn</td>
+                        <td class="px-4 py-3 text-right font-mono font-bold text-teal-700">${formatCurrency(d.daily_revenue)}</td>
+                    </tr>
+                `).join('');
+            }
+
+            // Top table
+            const topTbody = document.getElementById('topSellingTbody');
+            if (!top.length) {
+                topTbody.innerHTML = '<tr><td colspan="3" class="px-4 py-6 text-center text-slate-400">Chưa có dữ liệu</td></tr>';
+            } else {
+                topTbody.innerHTML = top.map((t, idx) => `
+                    <tr class="hover:bg-slate-50">
+                        <td class="px-4 py-3">
+                            <span class="font-bold text-slate-800">${idx + 1}. ${t.name}</span><br>
+                            <span class="font-mono text-[10px] text-slate-400">${t.code}</span>
+                        </td>
+                        <td class="px-3 py-3 text-right font-mono font-bold text-teal-800">${t.total_sold}</td>
+                        <td class="px-4 py-3 text-right font-mono font-semibold text-slate-800">${formatCurrency(t.total_revenue)}</td>
+                    </tr>
+                `).join('');
+            }
+        } catch (e) {
+            console.error(e);
+        }
+    }
+</script>
+{% endblock %}

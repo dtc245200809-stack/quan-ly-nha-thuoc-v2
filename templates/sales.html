@@ -1,0 +1,346 @@
+{% extends "layout.html" %}
+
+{% block title %}Bán Thuốc & Lập Hóa Đơn - PharmaAI{% endblock %}
+{% block header_title %}Quầy Bán Thuốc & Thu Ngân (POS){% endblock %}
+
+{% block content %}
+<div class="grid grid-cols-1 lg:grid-cols-12 gap-6">
+    <!-- Left Column: Medicine Selection & Search (7 Cols) -->
+    <div class="lg:col-span-7 space-y-4">
+        <div class="bg-white p-4 rounded-xl border border-slate-200 shadow-sm flex items-center gap-3">
+            <div class="relative flex-1">
+                <i class="fa-solid fa-magnifying-glass absolute left-3 top-3 text-slate-400 text-sm"></i>
+                <input type="text" id="posSearch" onkeyup="filterPosMedicines()" placeholder="Gõ tên thuốc, hoạt chất hoặc quét mã vạch..." class="w-full pl-9 pr-4 py-2 border border-slate-300 rounded-lg text-xs focus:ring-1 focus:ring-teal-500 focus:outline-none">
+            </div>
+            <span class="text-xs text-slate-500 hidden sm:inline"><i class="fa-solid fa-bolt text-amber-500 mr-1"></i>Xuất kho FEFO</span>
+        </div>
+
+        <!-- POS Medicine Grid -->
+        <div class="grid grid-cols-1 sm:grid-cols-2 gap-3" id="posGrid">
+            <div class="p-8 text-center text-slate-400 col-span-2">Đang tải danh sách thuốc bán lẻ...</div>
+        </div>
+    </div>
+
+    <!-- Right Column: Cart & Checkout (5 Cols) -->
+    <div class="lg:col-span-5">
+        <div class="bg-white rounded-xl border border-slate-200 shadow-sm overflow-hidden flex flex-col h-[calc(100vh-140px)] sticky top-4">
+            <!-- Header Cart -->
+            <div class="px-5 py-4 border-b border-slate-100 bg-slate-50 flex items-center justify-between">
+                <div class="flex items-center gap-2">
+                    <i class="fa-solid fa-basket-shopping text-teal-600"></i>
+                    <h3 class="font-bold text-sm text-slate-800">Đơn Thuốc Bán Lẻ</h3>
+                </div>
+                <button onclick="clearCart()" class="text-rose-600 hover:text-rose-700 text-xs font-semibold">
+                    <i class="fa-solid fa-trash-can mr-1"></i> Xóa giỏ
+                </button>
+            </div>
+
+            <!-- Customer & Prescription Info -->
+            <div class="p-3 bg-slate-50/70 border-b border-slate-100 text-xs space-y-2">
+                <div class="grid grid-cols-2 gap-2">
+                    <input type="text" id="custName" placeholder="Tên khách hàng (Mặc định: Khách lẻ)" class="px-2.5 py-1.5 border rounded-lg bg-white">
+                    <input type="text" id="custPhone" placeholder="SĐT khách hàng" class="px-2.5 py-1.5 border rounded-lg bg-white">
+                </div>
+                <div>
+                    <input type="text" id="rxCode" placeholder="Mã đơn thuốc bác sĩ (Bắt buộc nếu có thuốc Rx)" class="w-full px-2.5 py-1.5 border rounded-lg bg-white">
+                </div>
+            </div>
+
+            <!-- Cart Items List -->
+            <div class="flex-1 overflow-y-auto p-3 space-y-2" id="cartList">
+                <div class="text-center py-12 text-slate-400 text-xs">
+                    <i class="fa-solid fa-cart-arrow-down text-3xl mb-2 text-slate-300"></i>
+                    <p>Giỏ hàng chưa có thuốc nào.<br>Chọn thuốc từ danh mục bên trái.</p>
+                </div>
+            </div>
+
+            <!-- Summary & Payment -->
+            <div class="p-4 bg-slate-50 border-t border-slate-200 space-y-3 text-xs">
+                <div class="flex justify-between text-slate-600">
+                    <span>Tổng tiền thuốc:</span>
+                    <span id="cartSubtotal" class="font-bold text-slate-800">0 đ</span>
+                </div>
+                <div class="flex items-center justify-between text-slate-600">
+                    <span>Chiết khấu / Giảm giá:</span>
+                    <input type="number" id="cartDiscount" value="0" min="0" onchange="calculateCartTotals()" class="w-24 px-2 py-1 text-right border rounded bg-white font-mono">
+                </div>
+                <div class="flex justify-between items-center pt-2 border-t border-slate-200 text-sm">
+                    <span class="font-bold text-slate-800">Khách cần trả:</span>
+                    <span id="cartTotal" class="font-extrabold text-teal-700 text-lg">0 đ</span>
+                </div>
+
+                <div class="grid grid-cols-2 gap-2 pt-1">
+                    <select id="payMethod" class="px-2 py-1.5 border rounded-lg bg-white font-medium">
+                        <option value="cash">Tiền mặt</option>
+                        <option value="transfer">Chuyển khoản (VietQR)</option>
+                    </select>
+                    <button onclick="checkoutSale()" class="w-full py-2 bg-teal-600 hover:bg-teal-700 text-white rounded-lg font-bold shadow transition flex items-center justify-center gap-1.5">
+                        <i class="fa-solid fa-circle-check"></i> Thanh Toán & In
+                    </button>
+                </div>
+            </div>
+        </div>
+    </div>
+</div>
+
+<!-- Receipt Modal -->
+<div id="receiptModal" class="hidden fixed inset-0 bg-slate-900/60 z-50 flex items-center justify-center p-4">
+    <div class="bg-white rounded-2xl max-w-md w-full p-6 shadow-2xl space-y-4 max-h-[90vh] flex flex-col">
+        <div class="flex items-center justify-between pb-2 border-b border-slate-200">
+            <h3 class="font-bold text-sm text-slate-800">Hóa Đơn Bán Lẻ & Hướng Dẫn Sử Dụng</h3>
+            <button onclick="closeReceiptModal()" class="text-slate-400 hover:text-slate-600">&times;</button>
+        </div>
+        <div id="receiptContent" class="overflow-y-auto flex-1 font-mono text-xs bg-slate-50 p-4 rounded-xl border border-slate-200 whitespace-pre-wrap leading-relaxed text-slate-800"></div>
+        <div class="pt-2 border-t border-slate-200 flex justify-end gap-2">
+            <button onclick="closeReceiptModal()" class="px-4 py-2 bg-slate-200 text-slate-700 rounded-lg text-xs font-semibold hover:bg-slate-300">Đóng</button>
+            <button onclick="window.print()" class="px-4 py-2 bg-teal-600 text-white rounded-lg text-xs font-semibold hover:bg-teal-700 shadow flex items-center gap-1">
+                <i class="fa-solid fa-print"></i> In Hóa Đơn
+            </button>
+        </div>
+    </div>
+</div>
+{% endblock %}
+
+{% block scripts %}
+<script>
+    let posMedicines = [];
+    let cart = []; // { medicine_id, name, code, price, unit_name, available_stock, rx, qty }
+
+    document.addEventListener('DOMContentLoaded', () => {
+        loadPosMedicines();
+    });
+
+    async function loadPosMedicines() {
+        try {
+            const res = await fetch('/api/medicines/');
+            posMedicines = await res.json();
+            renderPosGrid(posMedicines);
+        } catch (e) {
+            console.error(e);
+        }
+    }
+
+    function renderPosGrid(list) {
+        const grid = document.getElementById('posGrid');
+        if (!list.length) {
+            grid.innerHTML = '<div class="p-8 text-center text-slate-400 col-span-2">Không tìm thấy thuốc nào</div>';
+            return;
+        }
+
+        grid.innerHTML = list.map(m => {
+            const isOutOfStock = m.available_stock <= 0;
+            const rxTag = m.prescription_required
+                ? `<span class="px-1.5 py-0.5 rounded text-[9px] font-bold bg-rose-100 text-rose-700">Rx</span>`
+                : `<span class="px-1.5 py-0.5 rounded text-[9px] font-medium bg-emerald-100 text-emerald-700">OTC</span>`;
+
+            return `
+                <div class="bg-white p-3.5 rounded-xl border border-slate-200 shadow-sm flex flex-col justify-between hover:border-teal-400 transition cursor-pointer ${isOutOfStock ? 'opacity-60 bg-slate-50' : ''}" onclick="${isOutOfStock ? '' : `addToCart(${m.id})`}">
+                    <div>
+                        <div class="flex items-center justify-between mb-1">
+                            <span class="font-mono text-[10px] text-slate-400">${m.code}</span>
+                            ${rxTag}
+                        </div>
+                        <h4 class="font-bold text-xs text-slate-900 mb-0.5 line-clamp-1">${m.name}</h4>
+                        <p class="text-[11px] text-slate-500 line-clamp-1">${m.active_ingredient} ${m.concentration ? '(' + m.concentration + ')' : ''}</p>
+                    </div>
+                    <div class="mt-3 pt-2 border-t border-slate-100 flex items-center justify-between text-xs">
+                        <span class="text-[11px] text-slate-500">Tồn: <b class="${isOutOfStock ? 'text-rose-600' : 'text-teal-700'}">${m.available_stock || 0}</b> ${m.unit_name || ''}</span>
+                        <button class="px-2.5 py-1 ${isOutOfStock ? 'bg-slate-200 text-slate-400' : 'bg-teal-50 text-teal-700 hover:bg-teal-100'} rounded font-semibold text-[11px]">
+                            ${isOutOfStock ? 'Hết hàng' : '+ Thêm'}
+                        </button>
+                    </div>
+                </div>
+            `;
+        }).join('');
+    }
+
+    function filterPosMedicines() {
+        const q = document.getElementById('posSearch').value.trim().toLowerCase();
+        const filtered = posMedicines.filter(m => 
+            !q || m.name.toLowerCase().includes(q) || m.code.toLowerCase().includes(q) || m.active_ingredient.toLowerCase().includes(q)
+        );
+        renderPosGrid(filtered);
+    }
+
+    function addToCart(medId) {
+        const med = posMedicines.find(m => m.id === medId);
+        if (!med) return;
+
+        const existing = cart.find(i => i.medicine_id === medId);
+        if (existing) {
+            if (existing.qty + 1 > med.available_stock) {
+                alert(`Không đủ tồn kho khả dụng! Hiện chỉ còn ${med.available_stock} ${med.unit_name}`);
+                return;
+            }
+            existing.qty += 1;
+        } else {
+            if (med.available_stock < 1) {
+                alert('Thuốc này đã hết hàng trong kho!');
+                return;
+            }
+            // Ước tính đơn giá từ danh mục hoặc 10,000 mặc định
+            cart.push({
+                medicine_id: med.id,
+                name: med.name,
+                code: med.code,
+                unit_name: med.unit_name || 'Đơn vị',
+                available_stock: med.available_stock,
+                rx: med.prescription_required,
+                price: 2500, // ước lượng cơ bản nếu chưa fetch batch price
+                qty: 1
+            });
+        }
+        renderCart();
+    }
+
+    function changeItemQty(medId, delta) {
+        const item = cart.find(i => i.medicine_id === medId);
+        if (!item) return;
+        const newQty = item.qty + delta;
+        if (newQty <= 0) {
+            cart = cart.filter(i => i.medicine_id !== medId);
+        } else if (newQty > item.available_stock) {
+            alert(`Tồn kho không đủ! Tối đa: ${item.available_stock}`);
+            return;
+        } else {
+            item.qty = newQty;
+        }
+        renderCart();
+    }
+
+    function clearCart() {
+        cart = [];
+        renderCart();
+    }
+
+    function renderCart() {
+        const listEl = document.getElementById('cartList');
+        if (!cart.length) {
+            listEl.innerHTML = `
+                <div class="text-center py-12 text-slate-400 text-xs">
+                    <i class="fa-solid fa-cart-arrow-down text-3xl mb-2 text-slate-300"></i>
+                    <p>Giỏ hàng chưa có thuốc nào.<br>Chọn thuốc từ danh mục bên trái.</p>
+                </div>
+            `;
+            calculateCartTotals();
+            return;
+        }
+
+        listEl.innerHTML = cart.map(item => `
+            <div class="p-2.5 bg-slate-50 border border-slate-200 rounded-lg flex items-center justify-between text-xs">
+                <div class="min-w-0 flex-1 pr-2">
+                    <div class="flex items-center gap-1.5">
+                        <span class="font-bold text-slate-800 truncate">${item.name}</span>
+                        ${item.rx ? '<span class="text-[9px] bg-rose-100 text-rose-700 font-bold px-1 rounded">Rx</span>' : ''}
+                    </div>
+                    <span class="text-[11px] text-slate-500 font-mono">${item.code}</span>
+                </div>
+                <div class="flex items-center gap-2">
+                    <div class="flex items-center border border-slate-300 rounded bg-white">
+                        <button onclick="changeItemQty(${item.medicine_id}, -1)" class="px-2 py-0.5 text-slate-600 hover:bg-slate-100 font-bold">-</button>
+                        <span class="px-2 py-0.5 font-bold font-mono text-teal-800">${item.qty}</span>
+                        <button onclick="changeItemQty(${item.medicine_id}, 1)" class="px-2 py-0.5 text-slate-600 hover:bg-slate-100 font-bold">+</button>
+                    </div>
+                    <button onclick="changeItemQty(${item.medicine_id}, -999)" class="text-slate-400 hover:text-rose-600 p-1">
+                        <i class="fa-solid fa-xmark"></i>
+                    </button>
+                </div>
+            </div>
+        `).join('');
+
+        calculateCartTotals();
+    }
+
+    function calculateCartTotals() {
+        // Tạm tính giá trị
+        let subtotal = 0;
+        cart.forEach(i => {
+            subtotal += i.qty * 3000; // hiển thị ước tính, backend tính chính xác theo giá lô FEFO
+        });
+        const discount = parseFloat(document.getElementById('cartDiscount').value || 0);
+        const total = Math.max(0, subtotal - discount);
+
+        document.getElementById('cartSubtotal').textContent = formatCurrency(subtotal);
+        document.getElementById('cartTotal').textContent = formatCurrency(total);
+    }
+
+    async function checkoutSale() {
+        if (!cart.length) {
+            alert('Vui lòng chọn ít nhất 1 loại thuốc vào giỏ!');
+            return;
+        }
+
+        // Kiểm tra xem giỏ hàng có thuốc Rx không
+        const hasRx = cart.some(i => i.rx);
+        const rxCode = document.getElementById('rxCode').value.trim();
+        if (hasRx && !rxCode) {
+            alert('CẢNH BÁO QUY TRÌNH GPP: Đơn hàng có thuốc kê đơn (Rx)!\nBắt buộc phải nhập mã đơn thuốc của bác sĩ trước khi thanh toán.');
+            return;
+        }
+
+        const payload = {
+            customer_name: document.getElementById('custName').value.trim() || 'Khách lẻ',
+            customer_phone: document.getElementById('custPhone').value.trim() || '',
+            prescription_code: rxCode || null,
+            discount: parseFloat(document.getElementById('cartDiscount').value || 0),
+            payment_method: document.getElementById('payMethod').value,
+            items: cart.map(i => ({ medicine_id: i.medicine_id, quantity: i.qty }))
+        };
+
+        try {
+            const res = await fetch('/api/invoices/', {
+                method: 'POST',
+                headers: {
+                    'Content-Type': 'application/json',
+                    'Authorization': `Bearer ${localStorage.getItem('pharma_token') || ''}`
+                },
+                body: JSON.stringify(payload)
+            });
+            const data = await res.json();
+            if (!res.ok) throw new Error(data.detail || 'Lỗi thanh toán');
+
+            showReceipt(data);
+            clearCart();
+            loadPosMedicines(); // reload stock
+        } catch (err) {
+            alert('Lỗi xuất bán: ' + err.message);
+        }
+    }
+
+    function showReceipt(data) {
+        const modal = document.getElementById('receiptModal');
+        const content = document.getElementById('receiptContent');
+
+        let lines = [
+            "==========================================",
+            "        NHÀ THUỐC ĐẠT CHUẨN GPP PHARMAAI  ",
+            "   ĐC: 123 Đường Y Dược, TP. Hồ Chí Minh  ",
+            "==========================================",
+            `Mã HĐ: ${data.invoice_number} | Ngày: ${new Date().toLocaleString('vi-VN')}`,
+            `Khách hàng: ${data.customer_name || 'Khách lẻ'}`,
+            `Phương thức: ${data.payment_method === 'cash' ? 'Tiền mặt' : 'Chuyển khoản'}`,
+            "------------------------------------------",
+            "DANH SÁCH THUỐC XUẤT THEO NGUYÊN TẮC FEFO:"
+        ];
+
+        data.items_sold.forEach((it, idx) => {
+            lines.push(`${idx + 1}. ${it.medicine_name} [Lô: ${it.batch_number} - Hạn: ${it.expiry_date}]`);
+            lines.push(`   SL: ${it.quantity} x ${formatCurrency(it.unit_price)} = ${formatCurrency(it.subtotal)}`);
+        });
+
+        lines.push("------------------------------------------");
+        lines.push(`Tổng tiền thuốc : ${formatCurrency(data.total_amount)}`);
+        lines.push(`Giảm giá        : ${formatCurrency(data.discount)}`);
+        lines.push(`KHÁCH PHẢI TRẢ  : ${formatCurrency(data.final_amount)}`);
+        lines.push("==========================================");
+        lines.push("LƯU Ý: Vui lòng dùng thuốc theo đúng chỉ dẫn của Dược sĩ/Bác sĩ.");
+
+        content.textContent = lines.join("\n");
+        modal.classList.remove('hidden');
+    }
+
+    function closeReceiptModal() {
+        document.getElementById('receiptModal').classList.add('hidden');
+    }
+</script>
+{% endblock %}

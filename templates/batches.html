@@ -1,0 +1,245 @@
+{% extends "layout.html" %}
+
+{% block title %}Quản Lý Lô Thuốc & Hạn Sử Dụng (FEFO) - PharmaAI{% endblock %}
+{% block header_title %}Quản Lý Lô Thuốc & Hạn Dùng FEFO{% endblock %}
+
+{% block content %}
+<div class="space-y-6">
+    <!-- Action Bar -->
+    <div class="bg-white p-4 rounded-xl border border-slate-200 shadow-sm flex flex-col md:flex-row items-center justify-between gap-4">
+        <div class="flex flex-1 items-center gap-3 w-full md:w-auto">
+            <select id="statusFilter" onchange="loadBatches()" class="py-2 px-3 border border-slate-300 rounded-lg text-xs focus:ring-1 focus:ring-teal-500 focus:outline-none">
+                <option value="">-- Tất cả trạng thái --</option>
+                <option value="active" selected>Đang lưu thông (Active)</option>
+                <option value="expired">Đã hết hạn (Expired)</option>
+                <option value="disposed">Đã tiêu hủy (Disposed)</option>
+                <option value="recalled">Thu hồi (Recalled)</option>
+            </select>
+            <div class="text-xs text-slate-500">
+                <i class="fa-solid fa-circle-info text-teal-600 mr-1"></i> Xuất kho tự động tuân thủ nguyên tắc <b>FEFO (First Expired, First Out)</b>
+            </div>
+        </div>
+
+        <button onclick="openImportBatchModal()" class="px-4 py-2 bg-teal-600 hover:bg-teal-700 text-white rounded-lg text-xs font-semibold shadow transition flex items-center gap-2">
+            <i class="fa-solid fa-boxes-packing"></i> Nhập Kho Lô Mới
+        </button>
+    </div>
+
+    <!-- Batches Table -->
+    <div class="bg-white rounded-xl border border-slate-200 shadow-sm overflow-hidden">
+        <div class="p-0 overflow-x-auto">
+            <table class="w-full text-left text-xs text-slate-600">
+                <thead class="bg-slate-50 text-slate-500 border-b border-slate-200 font-medium">
+                    <tr>
+                        <th class="px-4 py-3">Số Lô (Batch No.)</th>
+                        <th class="px-4 py-3">Tên Thuốc Biệt Dược</th>
+                        <th class="px-3 py-3">Nhà Cung Cấp</th>
+                        <th class="px-3 py-3">Ngày Nhập / NSX</th>
+                        <th class="px-3 py-3">Hạn Sử Dụng (EXP)</th>
+                        <th class="px-3 py-3 text-right">Số Lượng Nhập</th>
+                        <th class="px-3 py-3 text-right">Còn Lại (Khả Dụng)</th>
+                        <th class="px-3 py-3 text-right">Giá Bán</th>
+                        <th class="px-3 py-3 text-center">Trạng Thái / Date</th>
+                    </tr>
+                </thead>
+                <tbody id="batchesTbody" class="divide-y divide-slate-100">
+                    <tr><td colspan="9" class="px-4 py-8 text-center text-slate-400">Đang tải danh sách lô thuốc...</td></tr>
+                </tbody>
+            </table>
+        </div>
+    </div>
+</div>
+
+<!-- Modal: Nhập Kho Lô Thuốc Mới -->
+<div id="importBatchModal" class="hidden fixed inset-0 bg-slate-900/60 z-50 flex items-center justify-center p-4">
+    <div class="bg-white rounded-2xl max-w-xl w-full p-6 shadow-2xl space-y-4 max-h-[90vh] flex flex-col">
+        <div class="flex items-center justify-between pb-3 border-b border-slate-200">
+            <h3 class="font-bold text-base text-slate-800">Tiếp Nhận & Nhập Lô Hàng Mới (SOP-01)</h3>
+            <button onclick="closeImportBatchModal()" class="text-slate-400 hover:text-slate-600 text-lg">&times;</button>
+        </div>
+        <form id="importBatchForm" onsubmit="submitImportBatch(event)" class="overflow-y-auto flex-1 space-y-3 pr-1 text-xs">
+            <div class="grid grid-cols-2 gap-3">
+                <div>
+                    <label class="block font-medium text-slate-700 mb-1">Chọn Dược Phẩm *</label>
+                    <select id="bMedId" required class="w-full px-3 py-2 border rounded-lg focus:ring-1 focus:ring-teal-500"></select>
+                </div>
+                <div>
+                    <label class="block font-medium text-slate-700 mb-1">Số Lô Sản Xuất (Batch No.) *</label>
+                    <input type="text" id="bNumber" required placeholder="VD: LOT202410" class="w-full px-3 py-2 border rounded-lg focus:ring-1 focus:ring-teal-500">
+                </div>
+            </div>
+
+            <div class="grid grid-cols-2 gap-3">
+                <div>
+                    <label class="block font-medium text-slate-700 mb-1">Nhà Cung Cấp *</label>
+                    <select id="bSupplier" required class="w-full px-3 py-2 border rounded-lg focus:ring-1 focus:ring-teal-500"></select>
+                </div>
+                <div>
+                    <label class="block font-medium text-slate-700 mb-1">Ngày Tiếp Nhận Kho</label>
+                    <input type="date" id="bImportDate" required class="w-full px-3 py-2 border rounded-lg focus:ring-1 focus:ring-teal-500">
+                </div>
+            </div>
+
+            <div class="grid grid-cols-2 gap-3">
+                <div>
+                    <label class="block font-medium text-slate-700 mb-1">Ngày Sản Xuất (MFG) *</label>
+                    <input type="date" id="bMfgDate" required class="w-full px-3 py-2 border rounded-lg focus:ring-1 focus:ring-teal-500">
+                </div>
+                <div>
+                    <label class="block font-medium text-slate-700 mb-1">Hạn Sử Dụng (EXP) *</label>
+                    <input type="date" id="bExpDate" required class="w-full px-3 py-2 border rounded-lg focus:ring-1 focus:ring-teal-500">
+                </div>
+            </div>
+
+            <div class="grid grid-cols-3 gap-3">
+                <div>
+                    <label class="block font-medium text-slate-700 mb-1">Số Lượng Nhập *</label>
+                    <input type="number" id="bQty" min="1" required class="w-full px-3 py-2 border rounded-lg focus:ring-1 focus:ring-teal-500">
+                </div>
+                <div>
+                    <label class="block font-medium text-slate-700 mb-1">Giá Nhập (VNĐ) *</label>
+                    <input type="number" id="bImportPrice" min="0" required class="w-full px-3 py-2 border rounded-lg focus:ring-1 focus:ring-teal-500">
+                </div>
+                <div>
+                    <label class="block font-medium text-slate-700 mb-1">Giá Bán Đề Xuất (VNĐ) *</label>
+                    <input type="number" id="bSellingPrice" min="0" required class="w-full px-3 py-2 border rounded-lg focus:ring-1 focus:ring-teal-500">
+                </div>
+            </div>
+
+            <div class="p-3 bg-teal-50 text-teal-800 rounded-lg text-[11px] leading-relaxed">
+                <i class="fa-solid fa-shield-halved mr-1"></i> Theo quy định GSP/GPP: Thuốc nhập kho bắt buộc phải kiểm tra hạn sử dụng còn trên 6 tháng hoặc đúng theo quy chuẩn hợp đồng với nhà sản xuất.
+            </div>
+
+            <div class="pt-3 border-t border-slate-200 flex justify-end gap-2">
+                <button type="button" onclick="closeImportBatchModal()" class="px-4 py-2 bg-slate-100 text-slate-700 rounded-lg text-xs font-semibold hover:bg-slate-200">Hủy</button>
+                <button type="submit" class="px-4 py-2 bg-teal-600 text-white rounded-lg text-xs font-semibold hover:bg-teal-700 shadow">Xác Nhận Nhập Kho</button>
+            </div>
+        </form>
+    </div>
+</div>
+{% endblock %}
+
+{% block scripts %}
+<script>
+    let allSuppliers = [];
+
+    document.addEventListener('DOMContentLoaded', () => {
+        loadSuppliers();
+        loadMedicineOptions();
+        loadBatches();
+        
+        // set default today
+        const today = new Date().toISOString().split('T')[0];
+        document.getElementById('bImportDate').value = today;
+    });
+
+    async function loadSuppliers() {
+        try {
+            const res = await fetch('/api/batches/suppliers');
+            allSuppliers = await res.json();
+            const supSelect = document.getElementById('bSupplier');
+            allSuppliers.forEach(s => {
+                supSelect.innerHTML += `<option value="${s.id}">${s.name}</option>`;
+            });
+        } catch (e) {
+            console.error(e);
+        }
+    }
+
+    async function loadMedicineOptions() {
+        try {
+            const res = await fetch('/api/medicines/');
+            const meds = await res.json();
+            const select = document.getElementById('bMedId');
+            meds.forEach(m => {
+                select.innerHTML += `<option value="${m.id}">${m.name} (${m.code})</option>`;
+            });
+        } catch (e) {
+            console.error(e);
+        }
+    }
+
+    async function loadBatches() {
+        const status = document.getElementById('statusFilter').value;
+        const tbody = document.getElementById('batchesTbody');
+        try {
+            const res = await fetch(`/api/batches/${status ? '?status=' + status : ''}`);
+            const batches = await res.json();
+            if (!batches.length) {
+                tbody.innerHTML = '<tr><td colspan="9" class="px-4 py-8 text-center text-slate-400">Không có lô nào</td></tr>';
+                return;
+            }
+
+            tbody.innerHTML = batches.map(b => {
+                let badge = '';
+                if (b.status === 'expired' || b.days_left < 0) {
+                    badge = `<span class="px-2 py-0.5 rounded text-[10px] font-bold bg-rose-100 text-rose-700">HẾT HẠN (${Math.abs(b.days_left)} ngày)</span>`;
+                } else if (b.days_left <= 30) {
+                    badge = `<span class="px-2 py-0.5 rounded text-[10px] font-bold bg-amber-100 text-amber-700">CẬN HẠN (${b.days_left} ngày)</span>`;
+                } else if (b.days_left <= 60) {
+                    badge = `<span class="px-2 py-0.5 rounded text-[10px] font-medium bg-yellow-100 text-yellow-800">Còn ${b.days_left} ngày</span>`;
+                } else {
+                    badge = `<span class="px-2 py-0.5 rounded text-[10px] font-medium bg-emerald-100 text-emerald-800">Còn ${b.days_left} ngày</span>`;
+                }
+
+                return `
+                    <tr class="hover:bg-slate-50 transition">
+                        <td class="px-4 py-3 font-mono font-bold text-slate-800">${b.batch_number}</td>
+                        <td class="px-4 py-3 font-semibold text-teal-800">${b.medicine_name}</td>
+                        <td class="px-3 py-3 text-slate-600">${b.supplier_name || 'N/A'}</td>
+                        <td class="px-3 py-3 text-slate-500">${b.import_date} <br><span class="text-[10px]">NSX: ${b.manufacture_date}</span></td>
+                        <td class="px-3 py-3 font-bold ${b.days_left <= 30 ? 'text-rose-600' : 'text-slate-700'}">${b.expiry_date}</td>
+                        <td class="px-3 py-3 text-right font-mono">${b.quantity_imported}</td>
+                        <td class="px-3 py-3 text-right font-mono font-bold text-teal-700">${b.quantity_remaining}</td>
+                        <td class="px-3 py-3 text-right font-mono font-semibold">${formatCurrency(b.selling_price)}</td>
+                        <td class="px-3 py-3 text-center">${badge}</td>
+                    </tr>
+                `;
+            }).join('');
+        } catch (e) {
+            console.error(e);
+        }
+    }
+
+    function openImportBatchModal() {
+        document.getElementById('importBatchModal').classList.remove('hidden');
+    }
+
+    function closeImportBatchModal() {
+        document.getElementById('importBatchModal').classList.add('hidden');
+    }
+
+    async function submitImportBatch(e) {
+        e.preventDefault();
+        const payload = {
+            medicine_id: parseInt(document.getElementById('bMedId').value),
+            batch_number: document.getElementById('bNumber').value,
+            supplier_id: parseInt(document.getElementById('bSupplier').value),
+            import_date: document.getElementById('bImportDate').value,
+            manufacture_date: document.getElementById('bMfgDate').value,
+            expiry_date: document.getElementById('bExpDate').value,
+            quantity_imported: parseInt(document.getElementById('bQty').value),
+            import_price: parseFloat(document.getElementById('bImportPrice').value),
+            selling_price: parseFloat(document.getElementById('bSellingPrice').value)
+        };
+
+        try {
+            const res = await fetch('/api/batches/', {
+                method: 'POST',
+                headers: {
+                    'Content-Type': 'application/json',
+                    'Authorization': `Bearer ${localStorage.getItem('pharma_token') || ''}`
+                },
+                body: JSON.stringify(payload)
+            });
+            const data = await res.json();
+            if (!res.ok) throw new Error(data.detail || 'Lỗi nhập kho');
+            alert('Nhập kho lô thuốc thành công!');
+            closeImportBatchModal();
+            loadBatches();
+        } catch (err) {
+            alert(err.message);
+        }
+    }
+</script>
+{% endblock %}

@@ -1,0 +1,267 @@
+{% extends "layout.html" %}
+
+{% block title %}Tổng Quan Nhà Thuốc - PharmaAI{% endblock %}
+{% block header_title %}Bảng Điều Khiển Tổng Quan{% endblock %}
+
+{% block content %}
+<div class="space-y-6">
+    <!-- Mandatory Safety Warning Banner -->
+    <div class="p-4 rounded-xl bg-gradient-to-r from-teal-900 to-slate-900 text-white flex flex-col md:flex-row items-start md:items-center justify-between gap-4 shadow-md border border-teal-800">
+        <div class="flex items-center gap-3">
+            <div class="w-12 h-12 rounded-xl bg-teal-500/20 border border-teal-400/30 flex items-center justify-center text-teal-300 text-2xl flex-shrink-0">
+                <i class="fa-solid fa-notes-medical"></i>
+            </div>
+            <div>
+                <h3 class="font-bold text-base text-white">Hệ Thống Nhà Thuốc Chuẩn GPP Tích Hợp AI Trợ Lý Nội Bộ</h3>
+                <p class="text-xs text-teal-200 mt-0.5">Quản lý lô hạn FEFO, cảnh báo tồn kho tự động, tra cứu thông tin thuốc chuẩn hóa và đối soát quy trình SOP nội bộ.</p>
+            </div>
+        </div>
+        <div class="flex items-center gap-2">
+            <a href="/sales" class="px-4 py-2 bg-teal-500 hover:bg-teal-600 text-white rounded-lg text-xs font-semibold shadow transition flex items-center gap-2">
+                <i class="fa-solid fa-cart-plus"></i> Bán Thuốc Mới
+            </a>
+            <a href="/ai-copilot" class="px-4 py-2 bg-slate-800 hover:bg-slate-700 text-teal-300 border border-teal-500/40 rounded-lg text-xs font-semibold transition flex items-center gap-2">
+                <i class="fa-solid fa-robot"></i> Mở AI Copilot
+            </a>
+        </div>
+    </div>
+
+    <!-- 4 Stats Cards -->
+    <div class="grid grid-cols-1 md:grid-cols-2 lg:grid-cols-4 gap-5">
+        <div class="bg-white p-5 rounded-xl border border-slate-200 shadow-sm flex items-center justify-between">
+            <div>
+                <p class="text-xs font-medium text-slate-500 uppercase tracking-wider">Tổng Doanh Thu</p>
+                <h4 id="statRevenue" class="text-xl font-bold text-slate-800 mt-1">Đang tải...</h4>
+                <p class="text-[11px] text-emerald-600 font-medium mt-1"><i class="fa-solid fa-arrow-trend-up mr-1"></i>Từ hóa đơn bán ra</p>
+            </div>
+            <div class="w-12 h-12 rounded-xl bg-blue-50 text-blue-600 flex items-center justify-center text-xl">
+                <i class="fa-solid fa-wallet"></i>
+            </div>
+        </div>
+
+        <div class="bg-white p-5 rounded-xl border border-slate-200 shadow-sm flex items-center justify-between">
+            <div>
+                <p class="text-xs font-medium text-slate-500 uppercase tracking-wider">Danh Mục Thuốc</p>
+                <h4 id="statMedicines" class="text-xl font-bold text-slate-800 mt-1">Đang tải...</h4>
+                <p class="text-[11px] text-slate-500 mt-1">Hoạt chất & biệt dược GPP</p>
+            </div>
+            <div class="w-12 h-12 rounded-xl bg-teal-50 text-teal-600 flex items-center justify-center text-xl">
+                <i class="fa-solid fa-pills"></i>
+            </div>
+        </div>
+
+        <div class="bg-white p-5 rounded-xl border border-slate-200 shadow-sm flex items-center justify-between">
+            <div>
+                <p class="text-xs font-medium text-slate-500 uppercase tracking-wider">Thuốc Cận Hạn / Hết Hạn</p>
+                <h4 id="statExpiring" class="text-xl font-bold text-rose-600 mt-1">Đang tải...</h4>
+                <p class="text-[11px] text-rose-500 font-medium mt-1"><i class="fa-solid fa-bell mr-1"></i>Cần xử lý FEFO/hủy</p>
+            </div>
+            <div class="w-12 h-12 rounded-xl bg-rose-50 text-rose-600 flex items-center justify-center text-xl">
+                <i class="fa-solid fa-calendar-xmark"></i>
+            </div>
+        </div>
+
+        <div class="bg-white p-5 rounded-xl border border-slate-200 shadow-sm flex items-center justify-between">
+            <div>
+                <p class="text-xs font-medium text-slate-500 uppercase tracking-wider">Tồn Kho Dưới Ngưỡng</p>
+                <h4 id="statLowStock" class="text-xl font-bold text-amber-600 mt-1">Đang tải...</h4>
+                <p class="text-[11px] text-amber-600 font-medium mt-1"><i class="fa-solid fa-arrow-down mr-1"></i>Cần lập đơn nhập hàng</p>
+            </div>
+            <div class="w-12 h-12 rounded-xl bg-amber-50 text-amber-600 flex items-center justify-center text-xl">
+                <i class="fa-solid fa-triangle-exclamation"></i>
+            </div>
+        </div>
+    </div>
+
+    <!-- 2 Column Layout: Quick Action / Expiry Alerts & Recent Invoices -->
+    <div class="grid grid-cols-1 lg:grid-cols-2 gap-6">
+        <!-- Expiring Batches Table -->
+        <div class="bg-white rounded-xl border border-slate-200 shadow-sm overflow-hidden flex flex-col">
+            <div class="px-5 py-4 border-b border-slate-100 flex items-center justify-between bg-slate-50/50">
+                <div class="flex items-center gap-2">
+                    <span class="w-2.5 h-2.5 rounded-full bg-rose-500"></span>
+                    <h3 class="font-bold text-sm text-slate-800">Lô Thuốc Cận Hạn & Đã Hết Hạn (Theo dõi 60 ngày)</h3>
+                </div>
+                <a href="/alerts" class="text-xs text-teal-600 hover:text-teal-700 font-semibold">Xem tất cả &rarr;</a>
+            </div>
+            <div class="p-0 overflow-x-auto flex-1">
+                <table class="w-full text-left text-xs text-slate-600">
+                    <thead class="bg-slate-50 text-slate-500 border-b border-slate-200 font-medium">
+                        <tr>
+                            <th class="px-4 py-3">Tên Thuốc / Hoạt Chất</th>
+                            <th class="px-3 py-3">Số Lô</th>
+                            <th class="px-3 py-3">Hạn Dùng (EXP)</th>
+                            <th class="px-3 py-3 text-right">Tồn Kho</th>
+                            <th class="px-3 py-3 text-center">Tình Trạng</th>
+                        </tr>
+                    </thead>
+                    <tbody id="expiryAlertsTbody" class="divide-y divide-slate-100">
+                        <tr><td colspan="5" class="px-4 py-6 text-center text-slate-400">Đang nạp dữ liệu cảnh báo...</td></tr>
+                    </tbody>
+                </table>
+            </div>
+            <div class="p-3 bg-slate-50 border-t border-slate-100 text-right">
+                <button onclick="openAIExpiryAnalysis()" class="px-3 py-1.5 bg-rose-50 border border-rose-200 text-rose-700 rounded-lg text-xs font-semibold hover:bg-rose-100 transition inline-flex items-center gap-1.5">
+                    <i class="fa-solid fa-wand-magic-sparkles"></i> AI Sinh Phương Án Xử Lý Lô Cận Hạn
+                </button>
+            </div>
+        </div>
+
+        <!-- Recent Invoices Table -->
+        <div class="bg-white rounded-xl border border-slate-200 shadow-sm overflow-hidden flex flex-col">
+            <div class="px-5 py-4 border-b border-slate-100 flex items-center justify-between bg-slate-50/50">
+                <div class="flex items-center gap-2">
+                    <span class="w-2.5 h-2.5 rounded-full bg-teal-500"></span>
+                    <h3 class="font-bold text-sm text-slate-800">Hóa Đơn Bán Hàng Gần Đây</h3>
+                </div>
+                <a href="/reports" class="text-xs text-teal-600 hover:text-teal-700 font-semibold">Báo cáo chi tiết &rarr;</a>
+            </div>
+            <div class="p-0 overflow-x-auto flex-1">
+                <table class="w-full text-left text-xs text-slate-600">
+                    <thead class="bg-slate-50 text-slate-500 border-b border-slate-200 font-medium">
+                        <tr>
+                            <th class="px-4 py-3">Mã HĐ</th>
+                            <th class="px-3 py-3">Khách Hàng</th>
+                            <th class="px-3 py-3">Thời Gian</th>
+                            <th class="px-3 py-3 text-right">Thành Tiền</th>
+                            <th class="px-3 py-3 text-center">Thu Ngân</th>
+                        </tr>
+                    </thead>
+                    <tbody id="recentInvoicesTbody" class="divide-y divide-slate-100">
+                        <tr><td colspan="5" class="px-4 py-6 text-center text-slate-400">Đang nạp hóa đơn...</td></tr>
+                    </tbody>
+                </table>
+            </div>
+            <div class="p-3 bg-slate-50 border-t border-slate-100 text-right">
+                <a href="/sales" class="px-3 py-1.5 bg-teal-50 border border-teal-200 text-teal-700 rounded-lg text-xs font-semibold hover:bg-teal-100 transition inline-flex items-center gap-1.5">
+                    <i class="fa-solid fa-cart-shopping"></i> Lập Hóa Đơn Bán Lẻ
+                </a>
+            </div>
+        </div>
+    </div>
+</div>
+
+<!-- Modal AI Quick Result -->
+<div id="quickAIModal" class="hidden fixed inset-0 bg-slate-900/60 z-50 flex items-center justify-center p-4">
+    <div class="bg-white rounded-2xl max-w-2xl w-full p-6 shadow-2xl space-y-4 max-h-[85vh] flex flex-col">
+        <div class="flex items-center justify-between pb-3 border-b border-slate-200">
+            <div class="flex items-center gap-2">
+                <i class="fa-solid fa-robot text-teal-600 text-xl"></i>
+                <h3 class="font-bold text-base text-slate-800" id="quickAITitle">AI Báo Cáo Phân Tích Lô</h3>
+            </div>
+            <button onclick="closeQuickAIModal()" class="text-slate-400 hover:text-slate-600 text-lg">&times;</button>
+        </div>
+        <div id="quickAIContent" class="overflow-y-auto flex-1 text-xs whitespace-pre-wrap leading-relaxed text-slate-700 font-mono bg-slate-50 p-4 rounded-xl border border-slate-200">
+            Đang phân tích dữ liệu kho dược bằng AI...
+        </div>
+        <div class="pt-3 border-t border-slate-200 flex justify-end">
+            <button onclick="closeQuickAIModal()" class="px-4 py-2 bg-slate-200 text-slate-700 rounded-lg text-xs font-semibold hover:bg-slate-300">Đóng</button>
+        </div>
+    </div>
+</div>
+{% endblock %}
+
+{% block scripts %}
+<script>
+    document.addEventListener('DOMContentLoaded', () => {
+        loadDashboardStats();
+        loadExpiryAlerts();
+        loadRecentInvoices();
+    });
+
+    async function loadDashboardStats() {
+        try {
+            const res = await fetch('/api/reports/summary');
+            const data = await res.json();
+            document.getElementById('statRevenue').textContent = formatCurrency(data.total_revenue || 0);
+            document.getElementById('statMedicines').textContent = (data.total_medicines || 0) + ' loại';
+            document.getElementById('statExpiring').textContent = (data.expiring_batches_count || 0) + ' lô';
+            document.getElementById('statLowStock').textContent = (data.low_stock_medicines_count || 0) + ' thuốc';
+        } catch (e) {
+            console.error('Stats error:', e);
+        }
+    }
+
+    async function loadExpiryAlerts() {
+        try {
+            const res = await fetch('/api/batches/alerts/expiry?threshold_days=60');
+            const list = await res.json();
+            const tbody = document.getElementById('expiryAlertsTbody');
+            if (!list.length) {
+                tbody.innerHTML = '<tr><td colspan="5" class="px-4 py-4 text-center text-slate-400">Không có lô nào cận hạn trong 60 ngày!</td></tr>';
+                return;
+            }
+            tbody.innerHTML = list.slice(0, 5).map(item => {
+                let badge = '';
+                if (item.status_code === 'expired') {
+                    badge = `<span class="px-2 py-0.5 rounded text-[10px] font-bold bg-rose-100 text-rose-700">ĐÃ HẾT HẠN (${Math.abs(item.days_left)} ngày)</span>`;
+                } else if (item.status_code === 'critical') {
+                    badge = `<span class="px-2 py-0.5 rounded text-[10px] font-bold bg-amber-100 text-amber-700">Còn ${item.days_left} ngày</span>`;
+                } else {
+                    badge = `<span class="px-2 py-0.5 rounded text-[10px] font-medium bg-yellow-100 text-yellow-800">Còn ${item.days_left} ngày</span>`;
+                }
+                return `
+                    <tr class="hover:bg-slate-50 transition">
+                        <td class="px-4 py-2.5 font-medium text-slate-800">${item.medicine_name} <span class="text-slate-400 text-[10px]">(${item.medicine_code})</span></td>
+                        <td class="px-3 py-2.5 font-mono text-[11px] font-semibold">${item.batch_number}</td>
+                        <td class="px-3 py-2.5">${item.expiry_date}</td>
+                        <td class="px-3 py-2.5 text-right font-semibold">${item.quantity_remaining}</td>
+                        <td class="px-3 py-2.5 text-center">${badge}</td>
+                    </tr>
+                `;
+            }).join('');
+        } catch (e) {
+            console.error(e);
+        }
+    }
+
+    async function loadRecentInvoices() {
+        try {
+            const res = await fetch('/api/invoices/?limit=5');
+            const list = await res.json();
+            const tbody = document.getElementById('recentInvoicesTbody');
+            if (!list.length) {
+                tbody.innerHTML = '<tr><td colspan="5" class="px-4 py-4 text-center text-slate-400">Chưa có hóa đơn nào</td></tr>';
+                return;
+            }
+            tbody.innerHTML = list.map(inv => {
+                const dateStr = inv.created_at ? inv.created_at.replace('T', ' ').slice(0, 16) : '';
+                return `
+                    <tr class="hover:bg-slate-50 transition">
+                        <td class="px-4 py-2.5 font-mono font-bold text-teal-700">${inv.invoice_number}</td>
+                        <td class="px-3 py-2.5">${inv.customer_name || 'Khách lẻ'}</td>
+                        <td class="px-3 py-2.5 text-slate-500">${dateStr}</td>
+                        <td class="px-3 py-2.5 text-right font-bold text-slate-800">${formatCurrency(inv.final_amount)}</td>
+                        <td class="px-3 py-2.5 text-center text-slate-500">${inv.cashier_name || 'Quầy 1'}</td>
+                    </tr>
+                `;
+            }).join('');
+        } catch (e) {
+            console.error(e);
+        }
+    }
+
+    async function openAIExpiryAnalysis() {
+        const modal = document.getElementById('quickAIModal');
+        const content = document.getElementById('quickAIContent');
+        modal.classList.remove('hidden');
+        content.textContent = '⏳ AI đang phân tích dữ liệu hạn dùng kho và tổng hợp đề xuất xử lý theo chuẩn GSP/GPP...';
+
+        try {
+            const res = await fetch('/api/ai/expiry-report', {
+                method: 'POST',
+                headers: {'Content-Type': 'application/json'},
+                body: JSON.stringify({ threshold_days: 60 })
+            });
+            const data = await res.json();
+            content.textContent = data.report;
+        } catch (e) {
+            content.textContent = 'Lỗi khi gọi AI Assistant: ' + e.message;
+        }
+    }
+
+    function closeQuickAIModal() {
+        document.getElementById('quickAIModal').classList.add('hidden');
+    }
+</script>
+{% endblock %}
