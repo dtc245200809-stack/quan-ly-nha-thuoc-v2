@@ -3,7 +3,7 @@ include_once __DIR__ . '/app.php';
 include_once __DIR__ . '/ai_service.php';
 
 $auth = pms_auth('admin,manager,pharmacist,cashier');
-$page_title = 'Trợ lý AI Nhà Thuốc';
+$page_title = 'Trung tâm Tra cứu & Hỗ trợ Nghiệp vụ Dược';
 
 // Thống kê nhanh lô cận hạn phục vụ AI Report
 $nearExpiryStocks = pms_fetch_all("
@@ -23,19 +23,19 @@ pms_render_header($page_title, pms_current_role(), "ai_assistant.php");
 <div class="ds-card" style="margin-bottom:24px;border-left:4px solid #10b981;background:linear-gradient(to right, #f0fdf4, #ffffff);">
     <div style="display:flex;align-items:center;justify-content:space-between;flex-wrap:wrap;gap:12px;">
         <div>
-            <h2 style="font-size:20px;font-weight:700;color:#065f46;margin-bottom:6px;">🤖 Trợ lý AI Nhà Thuốc (Pharmacy AI Copilot)</h2>
-            <p style="color:#047857;font-size:14px;margin:0;">Hỗ trợ tóm tắt thông tin thuốc, phân tích cảnh báo hạn sử dụng & hỏi đáp quy trình nội bộ.</p>
+            <h2 style="font-size:20px;font-weight:700;color:#065f46;margin-bottom:6px;">📚 Trung tâm Tra cứu & Hỗ trợ Nghiệp vụ Chuẩn GPP</h2>
+            <p style="color:#047857;font-size:14px;margin:0;">Tra cứu nhanh dược lý, phân tích tồn kho cận hạn theo FEFO và quy trình thao tác chuẩn (SOP).</p>
         </div>
         <div style="display:flex;gap:8px;">
             <?php if ($auth['role'] === 'admin'): ?>
-                <a href="ai_config.php" class="btn btn-secondary" style="background:#fff;border:1px solid #10b981;color:#065f46;font-size:13px;">⚙️ Cấu hình API Key</a>
+                <a href="ai_config.php" class="btn btn-secondary" style="background:#fff;border:1px solid #10b981;color:#065f46;font-size:13px;">⚙️ Cấu hình Engine</a>
             <?php endif; ?>
         </div>
     </div>
     <div style="margin-top:14px;padding:10px 14px;background:#fef2f2;border:1px solid #fecaca;border-radius:8px;display:flex;align-items:center;gap:10px;">
         <span style="font-size:20px;">⚠️</span>
         <span style="color:#991b1b;font-size:13px;font-weight:600;">
-            NGUYÊN TẮC AN TOÀN ĐẠO ĐỨC AI: AI chỉ cung cấp thông tin tham khảo nội bộ cho nhân viên. Tuyệt đối không thay thế Dược sĩ chuyên môn hoặc tư vấn chẩn đoán/kê đơn cho khách hàng.
+            LƯU Ý NGHIỆP VỤ: Dữ liệu tự động chỉ dùng tham khảo nội bộ. Mọi quyết định xuất bán thuốc phải tuân thủ hướng dẫn của Dược sĩ chuyên môn phụ trách.
         </span>
     </div>
 </div>

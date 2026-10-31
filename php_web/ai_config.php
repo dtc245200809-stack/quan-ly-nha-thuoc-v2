@@ -3,7 +3,7 @@ include_once __DIR__ . '/app.php';
 include_once __DIR__ . '/ai_service.php';
 
 $auth = pms_auth('admin');
-$page_title = 'Cấu hình Gemini AI Đa Key & Xoay Key Tự Động';
+$page_title = 'Cấu hình API Engine & Key Pool';
 
 $msg = '';
 $msg_type = 'success';
@@ -50,8 +50,8 @@ pms_render_header($page_title, pms_current_role(), "ai_config.php");
 
 <div style="max-width:900px;margin:0 auto;">
     <div style="display:flex;align-items:center;justify-content:space-between;margin-bottom:20px;">
-        <h2 style="font-size:20px;font-weight:700;color:var(--ds-text);">⚙️ Cấu Hình Gemini AI & Quản Lý Đa Key (Xoay Key Tự Động)</h2>
-        <a href="ai_assistant.php" class="btn btn-secondary" style="font-size:13px;">&larr; Quay lại AI Trợ lý</a>
+        <h2 style="font-size:20px;font-weight:700;color:var(--ds-text);">⚙️ Quản Lý Cấu Hình API Engine & Dự Phòng Đa Key</h2>
+        <a href="ai_assistant.php" class="btn btn-secondary" style="font-size:13px;">&larr; Quay lại Tra cứu Nghiệp vụ</a>
     </div>
 
     <?php if (!empty($msg)): ?>
