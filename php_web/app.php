@@ -439,7 +439,12 @@ HTML;
 }
 function pms_password_matches(string $plain, string $stored): bool { return password_verify($plain, $stored) || $plain === $stored; }
 function pms_login_user(string $username, string $password): bool|string {
-    $config = ['Admin' => ['table' => 'admin', 'id' => 'admin_id', 'redirect' => 'admin.php'], 'Pharmacist' => ['table' => 'pharmacist', 'id' => 'pharmacist_id', 'redirect' => 'pharmacist.php'], 'Cashier' => ['table' => 'cashier', 'id' => 'cashier_id', 'redirect' => 'pharmacist.php'], 'Manager' => ['table' => 'manager', 'id' => 'manager_id', 'redirect' => 'manager.php']];
+    $config = [
+        'Admin' => ['table' => 'admin', 'id' => 'admin_id', 'redirect' => 'admin.php'],
+        'Pharmacist' => ['table' => 'pharmacist', 'id' => 'pharmacist_id', 'redirect' => 'pharmacist.php'],
+        'Cashier' => ['table' => 'cashier', 'id' => 'cashier_id', 'redirect' => 'pharmacist.php'],
+        'Manager' => ['table' => 'manager', 'id' => 'manager_id', 'redirect' => 'manager.php']
+    ];
     foreach ($config as $position => $cfg) {
         $row = pms_fetch_one("SELECT * FROM {$cfg['table']} WHERE username = ? LIMIT 1", 's', [$username]);
         if ($row && pms_password_matches($password, (string)$row['password'])) {
@@ -451,6 +456,20 @@ function pms_login_user(string $username, string $password): bool|string {
             pms_redirect($cfg['redirect']);
         }
     }
+    
+    // Kiểm tra đăng nhập cho Khách Hàng (bằng Số Điện Thoại hoặc Tên Khách Hàng)
+    $cust = pms_fetch_one("SELECT * FROM customers WHERE (phone = ? OR customer_name = ?) AND password IS NOT NULL LIMIT 1", 'ss', [$username, $username]);
+    if ($cust && pms_password_matches($password, (string)$cust['password'])) {
+        session_regenerate_id(true);
+        $_SESSION = [];
+        $_SESSION['customer_id'] = $cust['customer_id'];
+        $_SESSION['customer_name'] = $cust['customer_name'];
+        $_SESSION['customer_phone'] = $cust['phone'];
+        $_SESSION['username'] = $cust['phone'] ?: $cust['customer_name'];
+        pms_log('Đăng nhập', "Khách hàng {$cust['customer_name']} đăng nhập cổng thành viên");
+        pms_redirect('customer_portal.php');
+    }
+    
     return false;
 }
 function pms_stock_stats(): array {

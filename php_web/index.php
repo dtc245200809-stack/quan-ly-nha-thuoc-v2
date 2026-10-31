@@ -337,8 +337,8 @@ if (isset($_POST['submit'])) {
         <!-- Cột phải form login -->
         <div class="auth-form-panel">
             <div class="form-header">
-                <h2>Đăng nhập nhân viên</h2>
-                <p>Hệ thống tự động nhận diện quyền từ tài khoản</p>
+                <h2>Đăng nhập hệ thống</h2>
+                <p>Tự động nhận diện phân quyền: Admin, Dược sĩ, Thu ngân, Quản lý & Khách hàng</p>
             </div>
 
             <?php if ($message): ?>
@@ -347,8 +347,8 @@ if (isset($_POST['submit'])) {
 
             <form method="post">
                 <div class="field">
-                    <label for="username">Tên đăng nhập</label>
-                    <input type="text" id="username" name="username" placeholder="Nhập tên đăng nhập" autocomplete="username" required>
+                    <label for="username">Tên đăng nhập hoặc Số điện thoại</label>
+                    <input type="text" id="username" name="username" placeholder="Tên đăng nhập hoặc SĐT khách hàng" autocomplete="username" required>
                 </div>
                 <div class="field">
                     <label for="password">Mật khẩu</label>
@@ -360,7 +360,7 @@ if (isset($_POST['submit'])) {
             <!-- Bảng tài khoản thử nghiệm -->
             <div class="quick-accounts">
                 <div class="quick-accounts-title">Tài khoản đăng nhập hệ thống (Bấm để chọn nhanh):</div>
-                <div class="quick-accounts-grid">
+                <div class="quick-accounts-grid" style="grid-template-columns: repeat(auto-fit, minmax(130px, 1fr));">
                     <button type="button" class="quick-acc-btn" onclick="fillAccount('admin', 'admin123')">
                         <strong style="color: #0f766e;">Admin:</strong><br><span style="color: #64748b;">admin / admin123</span>
                     </button>
@@ -372,6 +372,9 @@ if (isset($_POST['submit'])) {
                     </button>
                     <button type="button" class="quick-acc-btn" onclick="fillAccount('chien', 'quanly123')">
                         <strong style="color: #6d28d9;">Quản lý:</strong><br><span style="color: #64748b;">chien / quanly123</span>
+                    </button>
+                    <button type="button" class="quick-acc-btn" onclick="fillAccount('0911111111', 'khach123')">
+                        <strong style="color: #059669;">Khách hàng:</strong><br><span style="color: #64748b;">0911111111 / khach123</span>
                     </button>
                 </div>
             </div>
