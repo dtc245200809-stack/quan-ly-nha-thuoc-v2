@@ -142,6 +142,9 @@ function pms_nav_for(string $role): array {
             ['group' => 'Danh mục', 'items' => [
                 ['href' => 'khach_hang.php', 'label' => 'Khách hàng', 'icon' => '👥'],
             ]],
+            ['group' => 'Trợ lý nghiệp vụ', 'items' => [
+                ['href' => 'ai_assistant.php', 'label' => 'Tra cứu & Hỗ trợ nghiệp vụ', 'icon' => '📚'],
+            ]],
         ],
         default => [],
     };

@@ -129,6 +129,10 @@ pms_render_header('Khách hàng thân thiết & tích điểm', $role, 'khach_ha
                     <div class="kh-card__rank">#
                         <?= $rank ?>
                     </div>
+
+                    <button type="button" class="btn-ai-consult" onclick="openCustomerAIModal('<?= pms_h($c['customer_name']) ?>', '<?= pms_h($c['phone']) ?>', <?= $pts ?>)" style="margin-top:12px;width:100%;padding:8px 12px;background:#f0fdf4;border:1px solid #86efac;color:#166534;font-size:12px;font-weight:600;border-radius:9999px;cursor:pointer;display:flex;align-items:center;justify-content:center;gap:6px;transition:all 0.2s ease;">
+                        <span>💡 Dặn dò & Quyền lợi</span>
+                    </button>
                 </article>
             <?php endforeach; ?>
         </div>
@@ -375,4 +379,124 @@ pms_render_header('Khách hàng thân thiết & tích điểm', $role, 'khach_ha
         document.getElementById('khCount').innerText = visible;
     });
 </script>
+
+<!-- Modal AI Trợ Lý Tư Vấn Dược Lý & Quyền Lợi Khách Hàng -->
+<div id="aiCustomerModal" style="display:none;position:fixed;top:0;left:0;width:100%;height:100%;background:rgba(15,23,42,0.6);z-index:9999;align-items:center;justify-content:center;padding:16px;">
+    <div style="background:#ffffff;border-radius:20px;max-width:650px;width:100%;max-height:90vh;overflow-y:auto;box-shadow:0 25px 50px -12px rgba(0,0,0,0.25);border:1px solid #cbd5e1;">
+        <div style="padding:18px 24px;border-bottom:1px solid #e2e8f0;display:flex;align-items:center;justify-content:space-between;background:#f8fafc;border-top-left-radius:20px;border-top-right-radius:20px;">
+            <div style="display:flex;align-items:center;gap:10px;">
+                <div style="width:36px;height:36px;border-radius:9999px;background:#dcfce7;color:#15803d;display:flex;align-items:center;justify-content:center;font-weight:bold;font-size:18px;">💡</div>
+                <div>
+                    <h3 style="margin:0;font-size:16px;font-weight:700;color:#0f172a;" id="aiModalCustTitle">Trợ lý Nghiệp vụ & Dặn dò Khách hàng</h3>
+                    <div style="font-size:12px;color:#64748b;" id="aiModalCustSubtitle">Hệ thống phân tích dược lý và quyền lợi thành viên</div>
+                </div>
+            </div>
+            <button type="button" onclick="closeCustomerAIModal()" style="background:none;border:none;font-size:20px;color:#94a3b8;cursor:pointer;line-height:1;">&times;</button>
+        </div>
+
+        <div style="padding:20px 24px;">
+            <!-- Thông tin khách hàng tóm tắt -->
+            <div style="display:flex;gap:12px;margin-bottom:16px;padding:12px;background:#f1f5f9;border-radius:14px;font-size:13px;">
+                <div style="flex:1;"><strong>Khách hàng:</strong> <span id="aiModalCustName">...</span></div>
+                <div style="flex:1;"><strong>Số điện thoại:</strong> <span id="aiModalCustPhone">...</span></div>
+                <div style="flex:1;"><strong>Điểm tích lũy:</strong> <span id="aiModalCustPoints" style="color:#0284c7;font-weight:700;">0</span> pts</div>
+            </div>
+
+            <!-- Form tùy chọn tư vấn -->
+            <div style="margin-bottom:16px;">
+                <label style="display:block;font-size:13px;font-weight:600;margin-bottom:6px;color:#334155;">Đơn thuốc cần dặn dò hoặc câu hỏi của khách:</label>
+                <textarea id="aiModalMedicineInput" rows="3" placeholder="Ví dụ: Khách mua Amoxicillin 500mg và Paracetamol 500mg, muốn hỏi uống thế nào và kiêng gì..." style="width:100%;padding:10px 14px;border-radius:14px;border:1px solid #cbd5e1;font-size:13px;box-sizing:border-box;font-family:inherit;"></textarea>
+            </div>
+
+            <div style="display:flex;gap:10px;margin-bottom:20px;">
+                <button type="button" onclick="callCustomerAI('consult_customer')" id="btnAiConsult" style="flex:1;padding:10px 16px;background:#0d9488;color:#fff;border:none;border-radius:9999px;font-size:13px;font-weight:600;cursor:pointer;display:flex;align-items:center;justify-content:center;gap:6px;">
+                    <span>📋 Sinh lời dặn dò & Cách dùng</span>
+                </button>
+                <button type="button" onclick="callCustomerAI('explain_policy')" id="btnAiPolicy" style="flex:1;padding:10px 16px;background:#0284c7;color:#fff;border:none;border-radius:9999px;font-size:13px;font-weight:600;cursor:pointer;display:flex;align-items:center;justify-content:center;gap:6px;">
+                    <span>🎁 Giải thích quyền lợi tích điểm</span>
+                </button>
+            </div>
+
+            <!-- Khung kết quả hiển thị -->
+            <div id="aiModalLoading" style="display:none;padding:24px;text-align:center;color:#64748b;font-size:13px;">
+                <div style="margin-bottom:8px;">⏳ Đang đối soát dược thư & quy chế nhà thuốc...</div>
+            </div>
+
+            <div id="aiModalResultBox" style="display:none;padding:16px;background:#f8fafc;border:1px solid #e2e8f0;border-radius:16px;">
+                <div style="display:flex;align-items:center;justify-content:space-between;margin-bottom:10px;border-bottom:1px dashed #cbd5e1;padding-bottom:8px;">
+                    <span style="font-weight:700;font-size:13px;color:#0f172a;" id="aiModalResultHeader">Nội dung hướng dẫn:</span>
+                    <button type="button" onclick="copyAiResult()" style="padding:4px 10px;background:#ffffff;border:1px solid #cbd5e1;border-radius:9999px;font-size:11px;cursor:pointer;color:#475569;">📋 Sao chép</button>
+                </div>
+                <div id="aiModalResultContent" style="font-size:13.5px;line-height:1.7;color:#1e293b;white-space:pre-wrap;"></div>
+            </div>
+        </div>
+
+        <div style="padding:14px 24px;background:#f8fafc;border-top:1px solid #e2e8f0;display:flex;justify-content:flex-end;border-bottom-left-radius:20px;border-bottom-right-radius:20px;">
+            <button type="button" onclick="closeCustomerAIModal()" style="padding:8px 20px;background:#e2e8f0;color:#334155;border:none;border-radius:9999px;font-size:13px;font-weight:600;cursor:pointer;">Đóng</button>
+        </div>
+    </div>
+</div>
+
+<script>
+let currentCustData = { name: '', phone: '', points: 0 };
+
+function openCustomerAIModal(name, phone, points) {
+    currentCustData = { name, phone, points };
+    document.getElementById('aiModalCustName').innerText = name;
+    document.getElementById('aiModalCustPhone').innerText = phone || 'Chưa có SĐT';
+    document.getElementById('aiModalCustPoints').innerText = Number(points).toLocaleString();
+    document.getElementById('aiModalCustTitle').innerText = 'Dặn dò & Chăm sóc: ' + name;
+    document.getElementById('aiModalMedicineInput').value = '';
+    document.getElementById('aiModalResultBox').style.display = 'none';
+    document.getElementById('aiCustomerModal').style.display = 'flex';
+}
+
+function closeCustomerAIModal() {
+    document.getElementById('aiCustomerModal').style.display = 'none';
+}
+
+async function callCustomerAI(action) {
+    const inputMed = document.getElementById('aiModalMedicineInput').value.trim();
+    const loading = document.getElementById('aiModalLoading');
+    const resultBox = document.getElementById('aiModalResultBox');
+    const resultContent = document.getElementById('aiModalResultContent');
+
+    loading.style.display = 'block';
+    resultBox.style.display = 'none';
+
+    try {
+        const resp = await fetch('api_ai_customer.php', {
+            method: 'POST',
+            headers: { 'Content-Type': 'application/json' },
+            body: JSON.stringify({
+                action: action,
+                customer_name: currentCustData.name,
+                phone: currentCustData.phone,
+                points: currentCustData.points,
+                medicines: inputMed,
+                question: inputMed
+            })
+        });
+        const data = await resp.json();
+        loading.style.display = 'none';
+        if (data.ok) {
+            resultContent.innerText = data.text;
+            resultBox.style.display = 'block';
+        } else {
+            alert(data.message || 'Có lỗi xảy ra khi gọi trợ lý AI.');
+        }
+    } catch (err) {
+        loading.style.display = 'none';
+        alert('Lỗi kết nối API trợ lý: ' + err.message);
+    }
+}
+
+function copyAiResult() {
+    const text = document.getElementById('aiModalResultContent').innerText;
+    navigator.clipboard.writeText(text).then(() => {
+        alert('Đã sao chép nội dung dặn dò khách hàng!');
+    });
+}
+</script>
+
 <?php pms_render_footer(); ?>
