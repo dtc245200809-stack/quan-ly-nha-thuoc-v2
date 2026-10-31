@@ -1,0 +1,6 @@
+<?php
+include_once 'app.php'; pms_auth('pharmacist_cashier');
+$alerts=pms_alert_data(); $rx=pms_fetch_all("SELECT drug_name, active_ingredient, SUM(quantity) qty FROM stock WHERE is_prescription=1 GROUP BY drug_name, active_ingredient ORDER BY drug_name ASC LIMIT 8");
+pms_render_header('Khu vực Dược sĩ & Bán hàng', 'pharmacist_cashier', 'pharmacist.php', ['Thuốc kê đơn'=>count($rx),'Cảnh báo hạn dùng'=>count($alerts['expiring'])]); ?>
+<section class="ds-panel ds-panel-dark" style="background:#1e293b;border-color:#334155"><div class="ds-panel__head" style="border-bottom:1px solid #334155"><h2 style="color:#f1f5f9">Hỗ trợ đúng chuẩn GPP</h2><div class="ds-panel__subtitle" style="color:#94a3b8">Khi bán thuốc kê đơn, hệ thống hiển thị popup xác nhận đã kiểm tra đơn bác sĩ trước khi thanh toán.</div></div><div class="ds-dashboard-grid"><?php foreach ($rx as $row): ?><div class="ds-info-card" style="background:rgba(255,255,255,0.05);border-color:rgba(255,255,255,0.1)"><strong style="color:#e2e8f0;display:block;margin-bottom:6px"><?= pms_h($row['drug_name']) ?></strong><div class="ds-muted" style="margin-bottom:12px"><?= pms_h($row['active_ingredient']) ?></div><span class="ds-badge ds-badge--danger">Thuốc kê đơn</span></div><?php endforeach; ?></div></section>
+<?php pms_render_footer(); ?>

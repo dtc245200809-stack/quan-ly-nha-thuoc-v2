@@ -99,7 +99,7 @@ source venv/bin/activate
 ```bash
 ./venv/bin/pytest tests/ -v
 ```
-Kết quả kỳ vọng: **15 passed (100%)**.
+Kết quả kỳ vọng: **18 passed (100%)**.
 
 ### 4.3. Khởi động Web Server (Uvicorn / FastAPI)
 ```bash
@@ -109,6 +109,20 @@ Kết quả kỳ vọng: **15 passed (100%)**.
 - **Swagger API Docs:** `http://localhost:8000/docs`
 - **Tài khoản mẫu đăng nhập:**
   - **Quản lý (Admin):** `admin` / `admin123`
+  - **Dược sĩ (Pharmacist):** `pharmacist` / `duocsi123`
+  - **Thu ngân (Cashier):** `cashier` / `thungan123`
+
+---
+
+### 4.4. Danh Sách Tài Khoản Đăng Nhập Hệ Thống
+- **Hệ Thống Trực Tuyến (PHP/cPanel - https://quanlynhathuoc.azmedia247.com/):**
+  - **Quản trị viên (Admin):** `admin` / `admin123` (Truy cập Cấu hình Đa Key AI tại `/ai_config.php`)
+  - **Dược sĩ (Pharmacist):** `duocsi` hoặc `kien` / `duocsi123`
+  - **Thu ngân (Cashier):** `phuong` hoặc `cuong` / `thungan123`
+  - **Quản lý (Manager):** `chien` hoặc `loc` / `quanly123`
+
+- **Hệ Thống FastAPI (Python Local):**
+  - **Quản trị viên (Admin):** `admin` / `admin123`
   - **Dược sĩ (Pharmacist):** `pharmacist` / `duocsi123`
   - **Thu ngân (Cashier):** `cashier` / `thungan123`
 

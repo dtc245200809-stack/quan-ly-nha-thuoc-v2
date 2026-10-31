@@ -1,0 +1,60 @@
+#tabbed_box {
+  width: 100%;
+  margin: 0;
+}
+.tabbed_box h4 {
+  margin: 0;
+  font-size: 30px;
+  font-weight: 800;
+  color: #0f172a;
+  letter-spacing: -0.03em;
+}
+.tabbed_area {
+  border: 1px solid #dbe5f0;
+  background: rgba(255,255,255,0.92);
+  border-radius: 24px;
+  padding: 22px;
+  box-shadow: 0 16px 40px rgba(15,23,42,.06);
+}
+ul.tabs {
+  display: flex;
+  flex-wrap: wrap;
+  gap: 10px;
+  list-style: none;
+  margin: 0 0 18px;
+  padding: 0;
+}
+ul.tabs li { display: inline-flex; }
+ul.tabs li a {
+  display: inline-flex;
+  align-items: center;
+  justify-content: center;
+  min-height: 44px;
+  padding: 10px 16px;
+  border-radius: 999px;
+  border: 1px solid #dbe5f0;
+  background: #eef4ff;
+  color: #1d4ed8;
+  font-size: 13px;
+  font-weight: 700;
+  letter-spacing: .02em;
+  text-decoration: none;
+  text-transform: none;
+}
+ul.tabs li a:hover { background: #dbeafe; border-color: #bfdbfe; }
+ul.tabs li a.active {
+  background: linear-gradient(135deg, #2563eb, #10b981);
+  color: #fff;
+  border-color: transparent;
+}
+.content {
+  background: #fff;
+  padding: 8px 0 0;
+  border: 0;
+}
+#content_2, #content_3 { display: none; clear: both; }
+#viewer, #viewer1 {
+  width: 100%;
+  float: none;
+  background: transparent;
+}

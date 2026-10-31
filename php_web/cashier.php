@@ -1,0 +1,7 @@
+<?php
+include_once 'app.php'; pms_auth('cashier');
+$statsRow = pms_fetch_one("SELECT (SELECT COUNT(*) FROM invoice_header WHERE DATE(created_at)=CURDATE()) invoices_today, (SELECT COALESCE(SUM(grand_total),0) FROM invoice_header WHERE DATE(created_at)=CURDATE()) revenue_today") ?: [];
+pms_render_header('Quầy bán hàng hiện đại', 'cashier', 'cashier.php', ['Hóa đơn hôm nay'=>$statsRow['invoices_today']??0,'Doanh thu hôm nay'=>pms_currency((float)($statsRow['revenue_today']??0))]); ?>
+
+<div class="ds-dashboard-grid" style="grid-template-columns: repeat(3, 1fr); margin-top:18px"><a class="ds-info-card" href="ban_hang.php" style="text-decoration:none"><strong style="font-size:14px;color:var(--ds-text-main);display:block;margin-bottom:6px">Mở POS</strong><div class="ds-muted">Quét thuốc, gõ tên, dùng điểm và thanh toán nhanh.</div></a><a class="ds-info-card" href="combo.php" style="text-decoration:none"><strong style="font-size:14px;color:var(--ds-text-main);display:block;margin-bottom:6px">Combo đơn mẫu</strong><div class="ds-muted">Liều cảm cúm, đau dạ dày, tiêu hóa...</div></a><a class="ds-info-card" href="tra_hang.php" style="text-decoration:none"><strong style="font-size:14px;color:var(--ds-text-main);display:block;margin-bottom:6px">Trả hàng</strong><div class="ds-muted">Hoàn trả theo mã hóa đơn, cộng lại tồn kho.</div></a></div>
+<?php pms_render_footer(); ?>
