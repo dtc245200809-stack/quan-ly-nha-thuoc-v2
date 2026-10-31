@@ -836,13 +836,39 @@ if (isset($_POST['submit'])) {
                 <button type="submit" name="submit" class="btn-login">Đăng nhập</button>
             </form>
 
+            
+            <div style="margin-top:20px;padding:14px;background:#f8fafc;border:1px solid #e2e8f0;border-radius:10px;font-size:12px;color:#334155;">
+                <div style="font-weight:700;margin-bottom:8px;color:#0f172a;display:flex;align-items:center;justify-content:space-between;">
+                    <span>📌 Tài khoản thử nghiệm (Bấm để điền nhanh):</span>
+                </div>
+                <div style="display:grid;grid-template-columns:1fr 1fr;gap:6px;">
+                    <button type="button" onclick="fillAccount('admin', 'admin123')" style="padding:6px 8px;background:#ffffff;border:1px solid #cbd5e1;border-radius:6px;cursor:pointer;text-align:left;font-size:11px;">
+                        <strong style="color:#2563eb;">👑 Admin:</strong><br><span style="color:#64748b;">admin / admin123</span>
+                    </button>
+                    <button type="button" onclick="fillAccount('duocsi', 'duocsi123')" style="padding:6px 8px;background:#ffffff;border:1px solid #cbd5e1;border-radius:6px;cursor:pointer;text-align:left;font-size:11px;">
+                        <strong style="color:#059669;">💊 Dược sĩ:</strong><br><span style="color:#64748b;">duocsi / duocsi123</span>
+                    </button>
+                    <button type="button" onclick="fillAccount('phuong', 'thungan123')" style="padding:6px 8px;background:#ffffff;border:1px solid #cbd5e1;border-radius:6px;cursor:pointer;text-align:left;font-size:11px;">
+                        <strong style="color:#d97706;">💵 Thu ngân:</strong><br><span style="color:#64748b;">phuong / thungan123</span>
+                    </button>
+                    <button type="button" onclick="fillAccount('chien', 'quanly123')" style="padding:6px 8px;background:#ffffff;border:1px solid #cbd5e1;border-radius:6px;cursor:pointer;text-align:left;font-size:11px;">
+                        <strong style="color:#7c3aed;">📋 Quản lý:</strong><br><span style="color:#64748b;">chien / quanly123</span>
+                    </button>
+                </div>
+            </div>
+
             <div class="card-footer">
                 <a href="about/about.html">Giới thiệu</a>
 
             </div>
         </div>
     </div>
+    
     <script>
+        function fillAccount(u, p) {
+            document.getElementById("username").value = u;
+            document.getElementById("password").value = p;
+        }
         window.addEventListener('load', function () {
             document.body.classList.add('is-ready');
         });
