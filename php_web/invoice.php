@@ -36,7 +36,7 @@ if ($view_id > 0) {
     <?php if (($header['status'] ?? 'active') !== 'cancelled' && ($role === 'admin' || $role === 'manager')): ?>
     <div id="cancelModal" style="display:none;position:fixed;inset:0;z-index:9999;background:rgba(0,0,0,.45);align-items:center;justify-content:center;" onclick="if(event.target===this)this.style.display='none'">
         <div style="background:var(--white);border-radius:var(--radius);padding:28px 32px;max-width:440px;width:90%;box-shadow:0 12px 40px rgba(0,0,0,.18);">
-            <h3 style="margin-bottom:12px;color:var(--red);">⚠️ Hủy hóa đơn <?= pms_h($header['invoice_code']) ?></h3>
+            <h3 style="margin-bottom:12px;color:var(--red);">Lưu ý: Hủy hóa đơn <?= pms_h($header['invoice_code']) ?></h3>
             <p style="font-size:13.5px;color:var(--gray-600);line-height:1.6;margin-bottom:16px;">
                 Thao tác này sẽ:<br>
                 • Hoàn lại <strong>toàn bộ tồn kho</strong> theo đúng lô đã xuất<br>

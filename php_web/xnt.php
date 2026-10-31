@@ -87,7 +87,7 @@ pms_render_header('Báo cáo · Xuất Nhập Tồn (Thẻ kho)', $role, 'xnt.ph
             <div class="panel-subtitle">Tra cứu chi tiết lịch sử nhập và xuất bán theo thời gian — Tồn đầu kỳ, Nhập, Xuất, Tồn cuối.</div>
         </div>
         <?php if ($drug_filter): ?>
-            <a class="btn sm secondary" href="?drug=<?= urlencode($drug_filter) ?>&from=<?= pms_h($from_date) ?>&to=<?= pms_h($to_date) ?>&export=1">📥 Xuất CSV</a>
+            <a class="btn sm secondary" href="?drug=<?= urlencode($drug_filter) ?>&from=<?= pms_h($from_date) ?>&to=<?= pms_h($to_date) ?>&export=1"> Xuất CSV</a>
         <?php endif; ?>
     </div>
     <form method="get" class="form-grid" style="grid-template-columns: 2fr 1fr 1fr auto; max-width: 900px; margin-bottom: 20px; align-items: end;">

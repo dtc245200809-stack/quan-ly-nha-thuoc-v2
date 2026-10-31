@@ -138,7 +138,7 @@ pms_render_header('Nhập kho theo lô và hạn dùng', $role, 'stock.php', pms
 
 <!-- Tabs -->
 <div style="display:flex;gap:6px;margin-bottom:16px;">
-    <a class="btn <?= $tab === 'nhap' ? 'primary' : 'secondary' ?> sm" href="?tab=nhap">📥 Lập phiếu nhập kho</a>
+    <a class="btn <?= $tab === 'nhap' ? 'primary' : 'secondary' ?> sm" href="?tab=nhap"> Lập phiếu nhập kho</a>
     <a class="btn <?= $tab === 'ton' ? 'primary' : 'secondary' ?> sm" href="?tab=ton">📦 Tồn kho & lô thuốc</a>
     <a class="btn <?= $tab === 'history' ? 'primary' : 'secondary' ?> sm" href="?tab=history">📋 Lịch sử phiếu nhập</a>
 </div>
@@ -150,7 +150,7 @@ pms_render_header('Nhập kho theo lô và hạn dùng', $role, 'stock.php', pms
 <div class="panel">
     <div class="panel-head">
         <div>
-            <h2>📥 Lập phiếu nhập kho</h2>
+            <h2> Lập phiếu nhập kho</h2>
             <div class="panel-subtitle">Phiếu nhập dạng header + nhiều dòng thuốc. Hệ thống tự cập nhật tồn kho theo lô.</div>
         </div>
     </div>

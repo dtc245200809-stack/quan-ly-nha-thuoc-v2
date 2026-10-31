@@ -73,7 +73,7 @@
                             <li>Quy trình bán thuốc theo nguyên tắc FEFO và tư vấn 5 đúng (SOP-04)</li>
                         </ul>
                         <div class="mt-2.5 pt-2 border-t border-slate-200 text-[10px] text-amber-800 font-medium">
-                            ⚠️ Lưu ý an toàn: AI từ chối mọi yêu cầu kê đơn, chẩn đoán triệu chứng hoặc chỉ định dùng thuốc.
+                            Lưu ý: Lưu ý an toàn: AI từ chối mọi yêu cầu kê đơn, chẩn đoán triệu chứng hoặc chỉ định dùng thuốc.
                         </div>
                     </div>
                 </div>
@@ -423,7 +423,7 @@ User: Dữ liệu thuốc: {{medicine_info}}. Hãy tóm tắt thông tin để n
             if (data.success) {
                 alert(`✓ KẾT NỐI GEMINI THÀNH CÔNG!\nModel: ${data.model}\nKey fingerprint: ${data.key_fingerprint}\nPhản hồi từ AI: "${data.text}"`);
             } else {
-                alert(`⚠️ THÔNG BÁO:\n${data.message || data.last_error || 'Chưa thể kết nối'}\nHệ thống sẽ tự động dùng Local Knowledge Engine.`);
+                alert(`Lưu ý: THÔNG BÁO:\n${data.message || data.last_error || 'Chưa thể kết nối'}\nHệ thống sẽ tự động dùng Local Knowledge Engine.`);
             }
             loadLiveAIConfig();
         } catch (e) {

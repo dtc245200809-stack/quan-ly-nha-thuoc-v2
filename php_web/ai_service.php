@@ -207,7 +207,7 @@ function pms_local_ai_fallback(string $prompt, string $systemPrompt): string {
             return "⛔ **CẢNH BÁO AN TOÀN Y TẾ TỪ AI NHÀ THUỐC**:\n\n" .
                    "Hệ thống AI không được phép đưa ra chẩn đoán bệnh tật, chỉ định điều trị hoặc tư vấn liều dùng ngoài quy chuẩn y khoa.\n" .
                    "👉 **Yêu cầu nhân viên:** Hướng dẫn khách hàng đến cơ sở y tế khám chữa bệnh hoặc liên hệ trực tiếp với **Dược sĩ phụ trách chuyên môn** của nhà thuốc để được tư vấn chính xác.\n\n" .
-                   "---\n⚠️ *Thông tin chỉ mang tính tham khảo nội bộ, không thay thế Bác sĩ/Dược sĩ chuyên môn.*";
+                   "---\nLưu ý: *Thông tin chỉ mang tính tham khảo nội bộ, không thay thế Bác sĩ/Dược sĩ chuyên môn.*";
         }
     }
 
@@ -217,7 +217,7 @@ function pms_local_ai_fallback(string $prompt, string $systemPrompt): string {
                "• **Nhóm hoạt chất & tác dụng chính:** Tham khảo thông tin đã được đăng ký trong danh mục thuốc chuẩn của nhà thuốc.\n" .
                "• **Dạng bào chế & bảo quản:** Bảo quản ở nhiệt độ dưới 30°C, tránh ánh nắng trực tiếp và độ ẩm cao.\n" .
                "• **Lưu ý thao tác tại quầy:** Kiểm tra đối chiếu tên thuốc, hàm lượng, số lô và hạn sử dụng trước khi bàn giao cho khách hàng.\n\n" .
-               "⚠️ **LƯU Ý QUAN TRỌNG:** Bản tóm tắt này chỉ phục vụ mục đích tra cứu nội bộ cho nhân viên. Tuyệt đối không thay thế chỉ định của Bác sĩ hoặc Dược sĩ chuyên môn.";
+               "Lưu ý: **LƯU Ý QUAN TRỌNG:** Bản tóm tắt này chỉ phục vụ mục đích tra cứu nội bộ cho nhân viên. Tuyệt đối không thay thế chỉ định của Bác sĩ hoặc Dược sĩ chuyên môn.";
     }
 
     // 3. Báo cáo hạn dùng & đề xuất xử lý
@@ -230,7 +230,7 @@ function pms_local_ai_fallback(string $prompt, string $systemPrompt): string {
                "2. **Đề xuất thao tác:**\n" .
                "   - Dược sĩ trưởng phê duyệt biên bản kiểm kê.\n" .
                "   - Cập nhật trạng thái trên hệ thống phần mềm để tránh xuất bán nhầm.\n\n" .
-               "---\n⚠️ *Báo cáo tham khảo chuẩn GSP/GPP nội bộ.*";
+               "---\nLưu ý: *Báo cáo tham khảo chuẩn GSP/GPP nội bộ.*";
     }
 
     // 4. Quy trình nội bộ SOP
@@ -240,7 +240,7 @@ function pms_local_ai_fallback(string $prompt, string $systemPrompt): string {
                "2. **Kiểm tra bao bì:** Hộp thuốc nguyên vẹn, có tem nhãn, không móp méo ẩm mốc.\n" .
                "3. **Kiểm tra số lô & HSD:** Ghi nhận số lô (Batch No) và hạn sử dụng (Expiry Date) chính xác vào hệ thống.\n" .
                "4. **Lưu kho:** Vào mục 'Quản lý kho & lô' -> Tạo phiếu nhập hàng -> Lưu thông tin.\n\n" .
-               "---\n⚠️ *Quy trình nội bộ GSP.*";
+               "---\nLưu ý: *Quy trình nội bộ GSP.*";
     }
 
     if (strpos($lower, 'hủy') !== false || strpos($lower, 'tiêu hủy') !== false) {
@@ -249,7 +249,7 @@ function pms_local_ai_fallback(string $prompt, string $systemPrompt): string {
                "2. **Lập biên bản:** Lập hội đồng hủy thuốc gồm Quản lý nhà thuốc và Dược sĩ phụ trách chuyên môn.\n" .
                "3. **Thủ tục tiêu hủy:** Thực hiện tiêu hủy theo đúng quy định của Bộ Y tế và pháp luật môi trường.\n" .
                "4. **Cập nhật dữ liệu:** Vào mục Kho thuốc xuất giảm trừ tồn kho với lý do 'Xuất hủy thuốc hết hạn'.\n\n" .
-               "---\n⚠️ *Quy trình nội bộ GPP.*";
+               "---\nLưu ý: *Quy trình nội bộ GPP.*";
     }
 
     if (strpos($lower, 'kiểm kê') !== false) {
@@ -258,13 +258,13 @@ function pms_local_ai_fallback(string $prompt, string $systemPrompt): string {
                "2. Đếm số lượng thực tế tại quầy và kho lưu trữ.\n" .
                "3. So sánh với số liệu Xuất - Nhập - Tồn trên phần mềm.\n" .
                "4. Ghi nhận chênh lệch, tìm nguyên nhân và báo cáo Dược sĩ quản lý.\n\n" .
-               "---\n⚠️ *Quy trình nội bộ GPP.*";
+               "---\nLưu ý: *Quy trình nội bộ GPP.*";
     }
 
-    return "🤖 **TRỢ LÝ AI NHÀ THUỐC ĐÃ TIẾP NHẬN YÊU CẦU**:\n\n" .
+    return "**HỆ THỐNG PHẢN HỒI THÔNG TIN**:\n\n" .
            "Vui lòng đặt các câu hỏi liên quan đến:\n" .
            "- 💊 *Tóm tắt thông tin thuốc từ danh mục*\n" .
            "- ⏰ *Phân tích đề xuất xử lý lô thuốc cận hạn/hết hạn*\n" .
            "- 📖 *Quy trình nghiệp vụ SOP (nhập lô, kiểm kê kho, xử lý hủy thuốc...)*\n\n" .
-           "⚠️ *Lưu ý: Admin có thể cập nhật danh sách nhiều Gemini API Key tại trang Cấu hình AI để kích hoạt cơ chế xoay key tự động khi hết Token.*";
+           "Lưu ý: *Lưu ý: Admin có thể cập nhật danh sách nhiều Gemini API Key tại trang Cấu hình AI để kích hoạt cơ chế xoay key tự động khi hết Token.*";
 }

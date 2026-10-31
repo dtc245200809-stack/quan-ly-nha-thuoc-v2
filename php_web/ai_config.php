@@ -50,7 +50,7 @@ pms_render_header($page_title, pms_current_role(), "ai_config.php");
 
 <div style="max-width:900px;margin:0 auto;">
     <div style="display:flex;align-items:center;justify-content:space-between;margin-bottom:20px;">
-        <h2 style="font-size:20px;font-weight:700;color:var(--ds-text);">⚙️ Quản Lý Cấu Hình API Engine & Dự Phòng Đa Key</h2>
+        <h2 style="font-size:20px;font-weight:700;color:var(--ds-text);"> Quản Lý Cấu Hình API Engine & Dự Phòng Đa Key</h2>
         <a href="ai_assistant.php" class="btn btn-secondary" style="font-size:13px;">&larr; Quay lại Tra cứu Nghiệp vụ</a>
     </div>
 

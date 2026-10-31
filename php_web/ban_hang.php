@@ -290,7 +290,7 @@ pms_render_header('Bán hàng POS', $role, 'ban_hang.php', [
                 </div>
                 
                 <div id="cashWarning" class="cash-warning" style="display:none;">
-                    ⚠️ Vui lòng nhập tiền khách đưa
+                    Lưu ý: Vui lòng nhập tiền khách đưa
                 </div>
                 
                 <button type="button" id="payBtn" class="btn-checkout mt-3" onclick="submitSale()" disabled>

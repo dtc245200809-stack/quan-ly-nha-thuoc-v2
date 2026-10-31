@@ -25,7 +25,7 @@ if ($_SERVER['REQUEST_METHOD'] === 'POST') {
                 $result = pms_backup_restore($tmpPath);
                 if ($result['ok']) {
                     pms_log('Phục hồi dữ liệu', "Phục hồi thành công từ file upload: $filename ({$fileSize}KB). {$result['success']} câu lệnh thực thi, {$result['failed']} lỗi nhỏ.");
-                    pms_flash("✅ " . $result['message'] . ($autoBackup['ok'] ? " (Bản sao lưu tự động: {$autoBackup['file']})" : ''));
+                    pms_flash("" . $result['message'] . ($autoBackup['ok'] ? " (Bản sao lưu tự động: {$autoBackup['file']})" : ''));
                     pms_redirect('restore.php');
                 } else {
                     $error = $result['message'];
@@ -55,7 +55,7 @@ if ($_SERVER['REQUEST_METHOD'] === 'POST') {
             $result = pms_backup_restore($filePath);
             if ($result['ok']) {
                 pms_log('Phục hồi dữ liệu', "Phục hồi thành công từ: $file ({$fileSize}KB). {$result['success']} câu lệnh, {$result['failed']} lỗi nhỏ.");
-                pms_flash("✅ " . $result['message'] . ($autoBackup['ok'] ? " (Bản sao lưu tự động: {$autoBackup['file']})" : ''));
+                pms_flash("" . $result['message'] . ($autoBackup['ok'] ? " (Bản sao lưu tự động: {$autoBackup['file']})" : ''));
                 pms_redirect('restore.php');
             } else {
                 $error = $result['message'];
@@ -97,7 +97,7 @@ pms_render_header('Hệ thống · Phục hồi dữ liệu', $role, 'restore.ph
         </div>
 
         <div class="alert warn">
-            ⚠️ <strong>LƯU Ý DÀNH CHO QUẢN TRỊ:</strong> Phục hồi dữ liệu sẽ ghi đè lên toàn bộ cơ sở dữ liệu hiện tại.
+            Lưu ý: <strong>LƯU Ý DÀNH CHO QUẢN TRỊ:</strong> Phục hồi dữ liệu sẽ ghi đè lên toàn bộ cơ sở dữ liệu hiện tại.
             Hệ thống sẽ tự động tạo bản backup trước khi thực hiện. Vui lòng đảm bảo tệp .sql hoàn toàn đáng tin cậy.
         </div>
 

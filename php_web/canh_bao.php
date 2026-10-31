@@ -115,13 +115,13 @@ pms_render_header('Cảnh báo hạn dùng & tồn kho thấp', $role, 'canh_bao
                 <div class="panel-subtitle">Thuốc có tồn dưới mức tối thiểu cần bổ sung.</div>
             </div>
             <div class="actions">
-                <a class="btn sm secondary" href="?export=low_stock">📥 Xuất CSV</a>
+                <a class="btn sm secondary" href="?export=low_stock"> Xuất CSV</a>
                 <span class="badge warn"><?= $totalLow ?> mục</span>
             </div>
         </div>
         <?php if (!$alerts['low']): ?>
             <div class="empty">
-                <div style="font-size: 2rem; margin-bottom: 8px;">✅</div>
+                <div style="font-size: 1.2rem; margin-bottom: 8px; color: #10b981; font-weight: 700;">[OK]</div>
                 Không có thuốc nào dưới mức tồn tối thiểu.
             </div>
         <?php else: ?>
@@ -165,13 +165,13 @@ pms_render_header('Cảnh báo hạn dùng & tồn kho thấp', $role, 'canh_bao
                 <div class="panel-subtitle">Lô thuốc sắp hết hạn hoặc đã quá hạn trong 90 ngày tới.</div>
             </div>
             <div class="actions">
-                <a class="btn sm secondary" href="?export=expiry">📥 Xuất CSV</a>
+                <a class="btn sm secondary" href="?export=expiry"> Xuất CSV</a>
                 <span class="badge danger"><?= $totalExp ?> lô</span>
             </div>
         </div>
         <?php if (!$alerts['expiring']): ?>
             <div class="empty">
-                <div style="font-size: 2rem; margin-bottom: 8px;">✅</div>
+                <div style="font-size: 1.2rem; margin-bottom: 8px; color: #10b981; font-weight: 700;">[OK]</div>
                 Không có lô nào cận date trong 90 ngày tới.
             </div>
         <?php else: ?>
@@ -297,7 +297,7 @@ function filterAlerts(type) {
             emptyDiv = document.createElement('div');
             emptyDiv.id = 'expiry-empty';
             emptyDiv.className = 'empty';
-            emptyDiv.innerHTML = '<div style="font-size: 2rem; margin-bottom: 8px;">✅</div>Không có lô nào thuộc mục này.';
+            emptyDiv.innerHTML = '<div style="font-size: 1.2rem; margin-bottom: 8px; color: #10b981; font-weight: 700;">[OK]</div>Không có lô nào thuộc mục này.';
             emptyDiv.style.display = 'none';
             document.querySelector('#expiry .table-wrap').after(emptyDiv);
         }

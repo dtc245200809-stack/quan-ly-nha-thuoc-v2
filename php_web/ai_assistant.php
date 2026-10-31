@@ -28,12 +28,12 @@ pms_render_header($page_title, pms_current_role(), "ai_assistant.php");
         </div>
         <div style="display:flex;gap:8px;">
             <?php if ($auth['role'] === 'admin'): ?>
-                <a href="ai_config.php" class="btn btn-secondary" style="background:#fff;border:1px solid #10b981;color:#065f46;font-size:13px;">⚙️ Cấu hình Engine</a>
+                <a href="ai_config.php" class="btn btn-secondary" style="background:#fff;border:1px solid #10b981;color:#065f46;font-size:13px;">Cấu hình Engine</a>
             <?php endif; ?>
         </div>
     </div>
     <div style="margin-top:14px;padding:10px 14px;background:#fef2f2;border:1px solid #fecaca;border-radius:8px;display:flex;align-items:center;gap:10px;">
-        <span style="font-size:20px;">⚠️</span>
+        <span style="font-size:20px;">Lưu ý:</span>
         <span style="color:#991b1b;font-size:13px;font-weight:600;">
             LƯU Ý NGHIỆP VỤ: Dữ liệu tự động chỉ dùng tham khảo nội bộ. Mọi quyết định xuất bán thuốc phải tuân thủ hướng dẫn của Dược sĩ chuyên môn phụ trách.
         </span>
@@ -79,7 +79,7 @@ pms_render_header($page_title, pms_current_role(), "ai_assistant.php");
         <div style="background:#fffbeb;border:1px solid #fef3c7;padding:10px;border-radius:8px;margin-bottom:12px;max-height:115px;overflow-y:auto;font-size:12px;">
             <strong>Lô cận hạn phát hiện trong kho:</strong>
             <?php if (empty($nearExpiryStocks)): ?>
-                <div style="color:#059669;margin-top:4px;">✅ Tất cả lô thuốc đều có hạn dùng an toàn (> 90 ngày).</div>
+                <div style="color:#059669;margin-top:4px;">Tất cả lô thuốc đều có hạn dùng an toàn (> 90 ngày).</div>
             <?php else: ?>
                 <ul style="margin:4px 0 0 16px;padding:0;color:#92400e;">
                     <?php foreach ($nearExpiryStocks as $st): ?>
@@ -115,7 +115,7 @@ pms_render_header($page_title, pms_current_role(), "ai_assistant.php");
     <!-- Chat history box -->
     <div id="chat-box" style="height:350px;overflow-y:auto;background:#f8fafc;border:1px solid #e2e8f0;border-radius:8px;padding:16px;margin-bottom:14px;display:flex;flex-direction:column;gap:12px;">
         <div style="align-self:flex-start;max-width:85%;background:#fff;border:1px solid #e2e8f0;padding:12px 16px;border-radius:12px;box-shadow:0 1px 2px rgba(0,0,0,0.05);">
-            <div style="font-weight:700;color:#10b981;font-size:12px;margin-bottom:4px;">🤖 AI ASSISTANT</div>
+            <div style="font-weight:700;color:#10b981;font-size:12px;margin-bottom:4px;">TRỢ LÝ NGHIỆP VỤ</div>
             <div style="font-size:14px;line-height:1.5;">Xin chào! Tôi là Trợ lý AI Nhà Thuốc. Tôi có thể hỗ trợ bạn tra cứu quy trình nội bộ, kiểm kê kho hoặc tóm tắt thuốc. Bạn cần tra cứu quy trình gì hôm nay?</div>
         </div>
     </div>
@@ -153,7 +153,7 @@ async function generateDrugSummary() {
     }
     const box = document.getElementById('drug-result');
     box.style.display = 'block';
-    box.innerHTML = '⏳ AI đang phân tích dữ liệu và tóm tắt...';
+    box.innerHTML = ' AI đang phân tích dữ liệu và tóm tắt...';
 
     const p = `Dữ liệu thuốc: ${input}. Hãy tóm tắt thông tin để nhân viên tra cứu nhanh, kèm cảnh báo cần hỏi dược sĩ khi tư vấn khách.`;
     const resp = await callAiBackend(p, 'summary');
@@ -163,7 +163,7 @@ async function generateDrugSummary() {
 async function generateExpiryReport() {
     const box = document.getElementById('expiry-result');
     box.style.display = 'block';
-    box.innerHTML = '⏳ AI đang phân tích dữ liệu lô cận hạn và tạo đề xuất...';
+    box.innerHTML = ' AI đang phân tích dữ liệu lô cận hạn và tạo đề xuất...';
 
     const prompt = 'Hãy sinh báo cáo phân tích các lô thuốc cận hạn hoặc có nguy cơ hết hạn trong nhà thuốc, đồng thời đề xuất giải pháp xử lý kho (FEFO, đổi trả nhà cung cấp, kiểm kê hủy hàng).';
     const resp = await callAiBackend(prompt, 'expiry_report');
@@ -194,7 +194,7 @@ async function sendChatMessage(e) {
     // Add loading bubble
     const aiDiv = document.createElement('div');
     aiDiv.style.cssText = 'align-self:flex-start;max-width:85%;background:#fff;border:1px solid #e2e8f0;padding:12px 16px;border-radius:12px;font-size:14px;line-height:1.5;box-shadow:0 1px 2px rgba(0,0,0,0.05);';
-    aiDiv.innerHTML = '<div style="font-weight:700;color:#10b981;font-size:12px;margin-bottom:4px;">🤖 AI ASSISTANT</div><div class="loading-msg">Đang suy nghĩ... ⏳</div>';
+    aiDiv.innerHTML = '<div style="font-weight:700;color:#10b981;font-size:12px;margin-bottom:4px;">TRỢ LÝ NGHIỆP VỤ</div><div class="loading-msg">Đang suy nghĩ... </div>';
     chatBox.appendChild(aiDiv);
     chatBox.scrollTop = chatBox.scrollHeight;
 

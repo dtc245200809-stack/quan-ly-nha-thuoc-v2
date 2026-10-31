@@ -105,7 +105,7 @@ function pms_nav_for(string $role): array {
         ]],
                 ['group' => 'Trợ lý nghiệp vụ', 'items' => [
             ['href' => 'ai_assistant.php', 'label' => 'Tra cứu & Hỗ trợ nghiệp vụ', 'icon' => '📚'],
-            ['href' => 'ai_config.php', 'label' => 'Cấu hình API Engine', 'icon' => '⚙️'],
+            ['href' => 'ai_config.php', 'label' => 'Cấu hình API Engine', 'icon' => ''],
         ]],
         ['group' => 'Hệ thống', 'items' => [
             ['href' => 'accounts.php', 'label' => 'Tài khoản & phân quyền', 'icon' => '🛡️'],
@@ -316,7 +316,7 @@ function pms_render_header(string $title, string $role, string $active, array $s
                 <div class="ds-sidebar__user-info">
                     <div class="ds-sidebar__user-name"><?= pms_h($user) ?></div>
                     <div class="ds-sidebar__user-role">
-                        <a href="profile.php" style="color:inherit; text-decoration:none;"><?= pms_h(pms_role_name()) ?> ⚙️</a>
+                        <a href="profile.php" style="color:inherit; text-decoration:none;"><?= pms_h(pms_role_name()) ?> </a>
                     </div>
                 </div>
                 <a class="ds-sidebar__logout" href="logout.php" title="Đăng xuất">

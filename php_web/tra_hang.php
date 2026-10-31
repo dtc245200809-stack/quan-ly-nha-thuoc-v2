@@ -77,7 +77,7 @@ pms_render_header('Quản lý trả hàng / khách hoàn trả', $role, 'tra_han
         <?php if ($header && !$is_returnable): ?>
         <section class="panel">
             <div class="empty">
-                <div style="font-size: 2rem; margin-bottom: 8px;">⏳</div>
+                <div style="font-size: 2rem; margin-bottom: 8px;"></div>
                 Không thể trả hàng cho hóa đơn này vì đã quá 24 giờ kể từ lúc mua (<?= pms_h($header['created_at']) ?>).
             </div>
         </section>

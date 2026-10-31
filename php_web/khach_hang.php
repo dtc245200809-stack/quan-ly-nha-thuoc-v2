@@ -52,25 +52,25 @@ pms_render_header('Khách hàng thân thiết & tích điểm', $role, 'khach_ha
 
     <div class="panel kh-rules-panel">
         <div class="panel-head">
-            <h2>🎯 Quy tắc tích điểm</h2>
+            <h2> Quy tắc tích điểm</h2>
         </div>
         <div class="kh-rules">
             <div class="kh-rule">
-                <div class="kh-rule__icon" style="background: var(--green-bg); color: var(--green);">📥</div>
+                <div class="kh-rule__icon" style="background: var(--green-bg); color: var(--green);"></div>
                 <div>
                     <strong>Tích lũy</strong>
                     <span>10.000 VNĐ = 1 điểm</span>
                 </div>
             </div>
             <div class="kh-rule">
-                <div class="kh-rule__icon" style="background: var(--blue-light); color: var(--blue);">💎</div>
+                <div class="kh-rule__icon" style="background: var(--blue-light); color: var(--blue);"></div>
                 <div>
                     <strong>Sử dụng</strong>
                     <span>1 điểm = 100 VNĐ giảm giá</span>
                 </div>
             </div>
             <div class="kh-rule">
-                <div class="kh-rule__icon" style="background: var(--orange-bg); color: var(--orange);">🎯</div>
+                <div class="kh-rule__icon" style="background: var(--orange-bg); color: var(--orange);"></div>
                 <div>
                     <strong>Mục tiêu</strong>
                     <span>Giữ chân khách hàng thân thiết, tăng doanh số</span>
@@ -131,7 +131,7 @@ pms_render_header('Khách hàng thân thiết & tích điểm', $role, 'khach_ha
                     </div>
 
                     <button type="button" class="btn-ai-consult" onclick="openCustomerAIModal('<?= pms_h($c['customer_name']) ?>', '<?= pms_h($c['phone']) ?>', <?= $pts ?>)" style="margin-top:12px;width:100%;padding:8px 12px;background:#f0fdf4;border:1px solid #86efac;color:#166534;font-size:12px;font-weight:600;border-radius:9999px;cursor:pointer;display:flex;align-items:center;justify-content:center;gap:6px;transition:all 0.2s ease;">
-                        <span>💡 Dặn dò & Quyền lợi</span>
+                        <span>Tư vấn & Quyền lợi</span>
                     </button>
                 </article>
             <?php endforeach; ?>
@@ -385,7 +385,7 @@ pms_render_header('Khách hàng thân thiết & tích điểm', $role, 'khach_ha
     <div style="background:#ffffff;border-radius:20px;max-width:650px;width:100%;max-height:90vh;overflow-y:auto;box-shadow:0 25px 50px -12px rgba(0,0,0,0.25);border:1px solid #cbd5e1;">
         <div style="padding:18px 24px;border-bottom:1px solid #e2e8f0;display:flex;align-items:center;justify-content:space-between;background:#f8fafc;border-top-left-radius:20px;border-top-right-radius:20px;">
             <div style="display:flex;align-items:center;gap:10px;">
-                <div style="width:36px;height:36px;border-radius:9999px;background:#dcfce7;color:#15803d;display:flex;align-items:center;justify-content:center;font-weight:bold;font-size:18px;">💡</div>
+                <div style="width:36px;height:36px;border-radius:9999px;background:#f1f5f9;color:#0f172a;display:flex;align-items:center;justify-content:center;font-weight:bold;font-size:13px;border:1px solid #cbd5e1;">RX</div>
                 <div>
                     <h3 style="margin:0;font-size:16px;font-weight:700;color:#0f172a;" id="aiModalCustTitle">Trợ lý Nghiệp vụ & Dặn dò Khách hàng</h3>
                     <div style="font-size:12px;color:#64748b;" id="aiModalCustSubtitle">Hệ thống phân tích dược lý và quyền lợi thành viên</div>
@@ -410,16 +410,16 @@ pms_render_header('Khách hàng thân thiết & tích điểm', $role, 'khach_ha
 
             <div style="display:flex;gap:10px;margin-bottom:20px;">
                 <button type="button" onclick="callCustomerAI('consult_customer')" id="btnAiConsult" style="flex:1;padding:10px 16px;background:#0d9488;color:#fff;border:none;border-radius:9999px;font-size:13px;font-weight:600;cursor:pointer;display:flex;align-items:center;justify-content:center;gap:6px;">
-                    <span>📋 Sinh lời dặn dò & Cách dùng</span>
+                    <span>Lập hướng dẫn sử dụng thuốc</span>
                 </button>
                 <button type="button" onclick="callCustomerAI('explain_policy')" id="btnAiPolicy" style="flex:1;padding:10px 16px;background:#0284c7;color:#fff;border:none;border-radius:9999px;font-size:13px;font-weight:600;cursor:pointer;display:flex;align-items:center;justify-content:center;gap:6px;">
-                    <span>🎁 Giải thích quyền lợi tích điểm</span>
+                    <span>Quy chế điểm thưởng & Ưu đãi</span>
                 </button>
             </div>
 
             <!-- Khung kết quả hiển thị -->
             <div id="aiModalLoading" style="display:none;padding:24px;text-align:center;color:#64748b;font-size:13px;">
-                <div style="margin-bottom:8px;">⏳ Đang đối soát dược thư & quy chế nhà thuốc...</div>
+                <div style="margin-bottom:8px;"> Đang đối soát dược thư & quy chế nhà thuốc...</div>
             </div>
 
             <div id="aiModalResultBox" style="display:none;padding:16px;background:#f8fafc;border:1px solid #e2e8f0;border-radius:16px;">

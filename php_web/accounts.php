@@ -172,7 +172,7 @@ pms_render_header('Hệ thống · Tài khoản & Phân quyền', $role, 'accoun
                             <?php if ($isLocked): ?>
                                 <span class="badge danger">🔒 Đã khóa</span>
                             <?php else: ?>
-                                <span class="badge ok">✅ Hoạt động</span>
+                                <span class="badge ok">Đang hoạt động</span>
                             <?php endif; ?>
                         </td>
                         <td>

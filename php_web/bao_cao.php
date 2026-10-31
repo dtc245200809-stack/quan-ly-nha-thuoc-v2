@@ -64,8 +64,8 @@ pms_render_header('Báo cáo doanh thu & quản trị', $role, 'bao_cao.php', []
             <div class="panel-subtitle">Phân tích hiệu suất kinh doanh, thuốc bán chạy/chậm, doanh thu theo phương thức thanh toán.</div>
         </div>
         <div class="actions">
-            <a class="btn sm secondary" href="?from=<?= pms_h($from_date) ?>&to=<?= pms_h($to_date) ?>&export=revenue">📥 Xuất CSV doanh thu</a>
-            <a class="btn sm secondary" href="?from=<?= pms_h($from_date) ?>&to=<?= pms_h($to_date) ?>&export=top_drugs">📥 Xuất CSV thuốc</a>
+            <a class="btn sm secondary" href="?from=<?= pms_h($from_date) ?>&to=<?= pms_h($to_date) ?>&export=revenue"> Xuất CSV doanh thu</a>
+            <a class="btn sm secondary" href="?from=<?= pms_h($from_date) ?>&to=<?= pms_h($to_date) ?>&export=top_drugs"> Xuất CSV thuốc</a>
             <button class="btn secondary sm" onclick="window.print()">🖨️ In PDF</button>
         </div>
     </div>

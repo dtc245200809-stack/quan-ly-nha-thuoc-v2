@@ -74,7 +74,7 @@ Yêu cầu trình bày thành 3 phần rõ ràng:
     // Đảm bảo luôn có disclaimer pháp lý
     $finalText = $aiRes['text'];
     if (!str_contains($finalText, 'Lưu ý y tế')) {
-        $finalText .= "\n\n---\n*⚠️ Lưu ý y tế: Thông tin mang tính chất hướng dẫn hỗ trợ tham khảo. Bệnh nhân cần tuân thủ tuyệt đối đơn thuốc của bác sĩ chuyên khoa.*";
+        $finalText .= "\n\n---\n*Lưu ý chuyên môn: Thông tin mang tính chất hướng dẫn hỗ trợ tham khảo. Bệnh nhân cần tuân thủ tuyệt đối đơn thuốc của bác sĩ chuyên khoa.*";
     }
 
     echo json_encode([
